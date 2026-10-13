@@ -1,1 +1,33 @@
-﻿
+﻿# Registro de avances — Gestor de proyectos y tareas
+
+## Forma de trabajo
+- C# y backend: Visual Studio.
+- React y frontend: Visual Studio Code.
+- Cada avance se comprueba antes de crear su commit y hacer push.
+- Cada commit explica qué cambió, para qué sirve y cómo se comprobó.
+
+## Completado y comprobado
+- Entorno: Node, npm, Git, SDK .NET 10.0.401 y conexión local a SQL Server.
+- API ASP.NET Core con controladores y archivo .gitignore.
+  - Comprobación: compilación correcta y respuesta JSON de WeatherForecast.
+  - Commit publicado: f9fa41f.
+- Documentación OpenAPI.
+  - Comprobación: /openapi/v1.json muestra la operación GET de WeatherForecast.
+- Modelo Project: Id, Name, Description y StartDate.
+  - Nombre obligatorio, máximo 100 caracteres.
+  - Descripción opcional, máximo 1000 caracteres.
+  - Fecha de inicio sin hora.
+  - Comprobación: recompilación en Visual Studio con 0 errores.
+  - Commit publicado: 625c625.
+- Invitación enviada al mentor EzRD12.
+  - Último estado comprobado: pendiente de aceptación.
+
+## Pendiente
+- Instalar Entity Framework Core y configurar SQL Server.
+- Crear DbContext y migraciones.
+- Completar CRUD de proyectos desde SQL Server hasta React.
+- Completar responsables y tareas, relaciones, validaciones y filtros.
+- Incorporar seguridad y autenticación solicitadas adicionalmente.
+  - Detalles del mecanismo pendientes de concretar.
+- Registrar resultados y evidencias de las pruebas P01–P12.
+- Preparar README y demostración final.

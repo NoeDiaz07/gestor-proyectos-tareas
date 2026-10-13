@@ -21,6 +21,9 @@
   - Commit publicado: 625c625.
 - Invitación enviada al mentor EzRD12.
   - Último estado comprobado: pendiente de aceptación.
+	- - EF Core: SqlServer y Tools 10.0.13 instalados.
+  - Comprobación: compilación correcta en Visual Studio.
+  - Conexión de la API y migraciones pendientes.
 
 ## Pendiente
 - Instalar Entity Framework Core y configurar SQL Server.
@@ -31,3 +34,4 @@
   - Detalles del mecanismo pendientes de concretar.
 - Registrar resultados y evidencias de las pruebas P01–P12.
 - Preparar README y demostración final.
+- - Configurar la conexión de la API a SQL Server.

@@ -31,7 +31,9 @@
 - Creada y aplicada la migración CreateProjects.
   - Comprobación: Update-Database finalizó correctamente.
   - SSMS confirma las columnas de Projects y el historial de migraciones.
-
+- Implementado GET /api/projects con ProjectResponseDto.
+  - Comprobación: compilación sin errores y respuesta [] desde la API.
+  - Crear, consultar por ID, editar y eliminar proyectos siguen pendientes.
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.

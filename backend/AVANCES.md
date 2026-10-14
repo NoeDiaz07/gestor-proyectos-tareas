@@ -60,6 +60,12 @@
   - Build correcto y Oxlint sin advertencias ni errores.
   - node_modules y dist excluidos de Git.
   - Pendiente: pantallas de proyectos y conexión con la API.
+  - Configurado CORS para React en localhost:5173, solo en desarrollo.
+- Creado services/api.js y listado de proyectos en App.jsx.
+  - Comprobado: aparecen los dos proyectos de SQL Server.
+  - API detenida: se muestra un error; al reiniciarla y recargar, vuelve el listado.
+  - Build correcto y Oxlint sin advertencias ni errores.
+  - Pendiente: formularios y acciones del CRUD en React.
 
 
 ## Pendiente

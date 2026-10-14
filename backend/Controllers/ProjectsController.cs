@@ -4,7 +4,6 @@ using GestorProyectos.Api.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace GestorProyectos.Api.Controllers;
 
 [ApiController]
@@ -35,10 +34,10 @@ public class ProjectsController : ControllerBase
 
         return Ok(projects);
     }
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProjectResponseDto>> GetById(int id)
     {
-
         var project = await _context.Projects
             .AsNoTracking()
             .Where(project => project.Id == id)
@@ -58,11 +57,12 @@ public class ProjectsController : ControllerBase
 
         return Ok(project);
     }
+
     [HttpPost]
     [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ProjectResponseDto>> Create(
-    CreateProjectDto dto)
+        CreateProjectDto dto)
     {
         var project = new Project
         {
@@ -86,5 +86,34 @@ public class ProjectsController : ControllerBase
             nameof(GetById),
             new { id = project.Id },
             response);
+    }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<ProjectResponseDto>> Update(
+        int id, UpdateProjectDto dto)
+    {
+        var project = await _context.Projects.FindAsync(id);
+
+        if (project is null)
+        {
+            return NotFound();
+        }
+
+        project.Name = dto.Name.Trim();
+        project.Description = dto.Description?.Trim();
+        project.StartDate = dto.StartDate!.Value;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new ProjectResponseDto
+        {
+            Id = project.Id,
+            Name = project.Name,
+            Description = project.Description,
+            StartDate = project.StartDate
+        });
     }
 }

@@ -59,6 +59,8 @@ public class ProjectsController : ControllerBase
         return Ok(project);
     }
     [HttpPost]
+    [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ProjectResponseDto>> Create(
     CreateProjectDto dto)
     {

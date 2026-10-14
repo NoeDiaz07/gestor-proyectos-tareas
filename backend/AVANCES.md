@@ -36,8 +36,11 @@
   - Crear, consultar por ID, editar y eliminar proyectos siguen pendientes.
 - Implementado GET /api/projects/{id}.
   - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
-  - Pendiente: comprobar respuesta 200 con un proyecto existente.
 	- Implementado POST /api/projects con creación en SQL Server. Comprobación: compilación sin errores, respuesta con ID generado y datos esperados, y registro confirmado en dbo.Projects.
+	- Integrado Swagger UI para probar la API en desarrollo.
+- Documentadas las respuestas 201 y 400 del POST.
+- Comprobado POST: respuesta 201 y Location /api/projects/2.
+- Comprobada la consulta por ID de un proyecto existente.
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.

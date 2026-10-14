@@ -33,7 +33,7 @@
   - SSMS confirma las columnas de Projects y el historial de migraciones.
 - Implementado GET /api/projects con ProjectResponseDto.
   - Comprobación: compilación sin errores y respuesta [] desde la API.
-  - Crear, consultar por ID, editar y eliminar proyectos siguen pendientes.
+- Editar y eliminar proyectos siguen pendientes.
 - Implementado GET /api/projects/{id}.
   - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
 	- Implementado POST /api/projects con creación en SQL Server. Comprobación: compilación sin errores, respuesta con ID generado y datos esperados, y registro confirmado en dbo.Projects.
@@ -41,6 +41,12 @@
 - Documentadas las respuestas 201 y 400 del POST.
 - Comprobado POST: respuesta 201 y Location /api/projects/2.
 - Comprobada la consulta por ID de un proyecto existente.
+- Pruebas de validación del POST comprobadas en Swagger:
+  - Nombre con solo espacios: esperado 400; obtenido 400 con error en Name.
+  - Fecha omitida: esperado 400; obtenido 400 con error en StartDate.
+  - Nombre de 101 caracteres: esperado 400; obtenido 400 por máximo de 100.
+  - SSMS confirma que permanecen únicamente los dos proyectos válidos.
+  - Pendiente: probar el límite de la descripción y los demás casos de P04.
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.

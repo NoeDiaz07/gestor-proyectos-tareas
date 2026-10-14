@@ -34,6 +34,9 @@
 - Implementado GET /api/projects con ProjectResponseDto.
   - Comprobación: compilación sin errores y respuesta [] desde la API.
   - Crear, consultar por ID, editar y eliminar proyectos siguen pendientes.
+- Implementado GET /api/projects/{id}.
+  - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
+  - Pendiente: comprobar respuesta 200 con un proyecto existente.
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.

@@ -33,4 +33,26 @@ public class ProjectsController : ControllerBase
 
         return Ok(projects);
     }
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ProjectResponseDto>> GetById(int id)
+    {
+        var project = await _context.Projects
+            .AsNoTracking()
+            .Where(project => project.Id == id)
+            .Select(project => new ProjectResponseDto
+            {
+                Id = project.Id,
+                Name = project.Name,
+                Description = project.Description,
+                StartDate = project.StartDate
+            })
+            .FirstOrDefaultAsync();
+
+        if (project is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(project);
+    }
 }

@@ -21,12 +21,14 @@
   - Commit publicado: 625c625.
 - Invitación enviada al mentor EzRD12.
   - Último estado comprobado: pendiente de aceptación.
-	- - EF Core: SqlServer y Tools 10.0.13 instalados.
+- EF Core: SqlServer y Tools 10.0.13 instalados.
   - Comprobación: compilación correcta en Visual Studio.
   - Conexión de la API y migraciones pendientes.
+- Creado ApplicationDbContext con DbSet<Project>.
+  - Comprobación: compilación correcta, 0 errores.
+  - Sin conexión configurada ni migraciones todavía.
 
 ## Pendiente
-- Instalar Entity Framework Core y configurar SQL Server.
 - Crear DbContext y migraciones.
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.
@@ -34,4 +36,5 @@
   - Detalles del mecanismo pendientes de concretar.
 - Registrar resultados y evidencias de las pruebas P01–P12.
 - Preparar README y demostración final.
-- - Configurar la conexión de la API a SQL Server.
+- Configurar la conexión de la API a SQL Server.
+- Crear y aplicar las migraciones.

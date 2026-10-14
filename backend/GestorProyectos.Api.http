@@ -4,3 +4,12 @@ GET {{GestorProyectos.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+POST http://localhost:5008/api/projects
+Content-Type: application/json
+
+{
+  "name": "  Sitio corporativo  ",
+  "description": "Proyecto de prueba",
+  "startDate": "2026-10-01"
+}
+###

@@ -1,7 +1,9 @@
-﻿using GestorProyectos.Api.Data;
+﻿using GestorProyectos.Api.Models;
+using GestorProyectos.Api.Data;
 using GestorProyectos.Api.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace GestorProyectos.Api.Controllers;
 
@@ -36,6 +38,7 @@ public class ProjectsController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProjectResponseDto>> GetById(int id)
     {
+
         var project = await _context.Projects
             .AsNoTracking()
             .Where(project => project.Id == id)
@@ -54,5 +57,32 @@ public class ProjectsController : ControllerBase
         }
 
         return Ok(project);
+    }
+    [HttpPost]
+    public async Task<ActionResult<ProjectResponseDto>> Create(
+    CreateProjectDto dto)
+    {
+        var project = new Project
+        {
+            Name = dto.Name.Trim(),
+            Description = dto.Description?.Trim(),
+            StartDate = dto.StartDate!.Value
+        };
+
+        _context.Projects.Add(project);
+        await _context.SaveChangesAsync();
+
+        var response = new ProjectResponseDto
+        {
+            Id = project.Id,
+            Name = project.Name,
+            Description = project.Description,
+            StartDate = project.StartDate
+        };
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = project.Id },
+            response);
     }
 }

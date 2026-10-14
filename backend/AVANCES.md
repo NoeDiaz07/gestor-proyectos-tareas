@@ -37,6 +37,7 @@
 - Implementado GET /api/projects/{id}.
   - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
   - Pendiente: comprobar respuesta 200 con un proyecto existente.
+	- Implementado POST /api/projects con creación en SQL Server. Comprobación: compilación sin errores, respuesta con ID generado y datos esperados, y registro confirmado en dbo.Projects.
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.
@@ -45,3 +46,4 @@
   - Detalles del mecanismo pendientes de concretar.
 - Registrar resultados y evidencias de las pruebas P01–P12.
 - Preparar README y demostración final.
+- volver a comprobar la respuesta 201 Created y la cabecera Location

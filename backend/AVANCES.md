@@ -27,14 +27,16 @@
 - Creado ApplicationDbContext con DbSet<Project>.
   - Comprobación: compilación correcta, 0 errores.
   - Sin conexión configurada ni migraciones todavía.
+- Registrado ApplicationDbContext en Program.cs y configurada la conexión local.
+- Creada y aplicada la migración CreateProjects.
+  - Comprobación: Update-Database finalizó correctamente.
+  - SSMS confirma las columnas de Projects y el historial de migraciones.
 
 ## Pendiente
-- Crear DbContext y migraciones.
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.
+- Crear y aplicar las migraciones que requieran responsables y tareas.
 - Incorporar seguridad y autenticación solicitadas adicionalmente.
   - Detalles del mecanismo pendientes de concretar.
 - Registrar resultados y evidencias de las pruebas P01–P12.
 - Preparar README y demostración final.
-- Configurar la conexión de la API a SQL Server.
-- Crear y aplicar las migraciones.

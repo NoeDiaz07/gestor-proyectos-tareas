@@ -33,7 +33,6 @@
   - SSMS confirma las columnas de Projects y el historial de migraciones.
 - Implementado GET /api/projects con ProjectResponseDto.
   - Comprobación: compilación sin errores y respuesta [] desde la API.
-- Eliminar proyectos sigue pendiente.
 - Implementado GET /api/projects/{id}.
   - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
 	- Implementado POST /api/projects con creación en SQL Server. Comprobación: compilación sin errores, respuesta con ID generado y datos esperados, y registro confirmado en dbo.Projects.
@@ -51,6 +50,13 @@
   - Comprobado: edición con 200 y cambio guardado en SQL Server.
   - ID inexistente: 404. Nombre con solo espacios: 400.
   - Pendiente: restantes validaciones del PUT y protección de fechas al incorporar tareas.
+	- Implementado DELETE /api/projects/{id}.
+  - Comprobado: respuesta 204 al eliminar el proyecto temporal 3.
+  - Verificación en SSMS: permanecen los proyectos 1 y 2.
+  - Pendiente: confirmar los 404 de consulta y borrado del ID eliminado.
+  - Pendiente: bloqueo 409 al incorporar tareas asociadas.
+
+
 ## Pendiente
 - Completar CRUD de proyectos desde SQL Server hasta React.
 - Completar responsables y tareas, relaciones, validaciones y filtros.

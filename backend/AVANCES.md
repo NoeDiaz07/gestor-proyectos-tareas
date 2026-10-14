@@ -55,6 +55,11 @@
   - Verificación en SSMS: permanecen los proyectos 1 y 2.
   - Pendiente: confirmar los 404 de consulta y borrado del ID eliminado.
   - Pendiente: bloqueo 409 al incorporar tareas asociadas.
+  - Creada la base del frontend con React y Vite 8.3.4.
+  - Pantalla inicial comprobada en localhost:5173.
+  - Build correcto y Oxlint sin advertencias ni errores.
+  - node_modules y dist excluidos de Git.
+  - Pendiente: pantallas de proyectos y conexión con la API.
 
 
 ## Pendiente

@@ -1,6 +1,6 @@
-﻿using GestorProyectos.Api.Models;
-using GestorProyectos.Api.Data;
+﻿using GestorProyectos.Api.Data;
 using GestorProyectos.Api.DTOs;
+using GestorProyectos.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -92,30 +92,10 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [HttpDelete("{id:int}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<ActionResult<ProjectResponseDto>> Update(
+        int id,
+        UpdateProjectDto dto)
     {
-        var project = await _context.Projects.FindAsync(id);
-
-        if (project is null)
-        {
-            return NotFound();
-        }
-
-        _context.Projects.Remove(project);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-    public async Task<ActionResult<ProjectResponseDto>> Update
-
-        (
-        int id, UpdateProjectDto dto)
-
-    {
-
         var project = await _context.Projects.FindAsync(id);
 
         if (project is null)
@@ -136,5 +116,23 @@ public class ProjectsController : ControllerBase
             Description = project.Description,
             StartDate = project.StartDate
         });
+    }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var project = await _context.Projects.FindAsync(id);
+
+        if (project is null)
+        {
+            return NotFound();
+        }
+
+        _context.Projects.Remove(project);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
     }
 }

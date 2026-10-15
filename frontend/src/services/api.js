@@ -1,5 +1,6 @@
 const API_URL = 'http://localhost:5008/api';
 
+
 export async function getProjects(signal) {
   const response = await fetch(`${API_URL}/projects`, {
     signal,
@@ -54,6 +55,31 @@ export async function getProjectById(id, signal) {
         ? 'El proyecto no existe.'
         : `No se pudo cargar el proyecto (${response.status}).`
     )
+  }
+
+  return response.json()
+}
+export async function updateProject(id, project) {
+  const response = await fetch(`${API_URL}/projects/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(project),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      response.status === 404
+        ? 'El proyecto ya no existe.'
+        : problem.detail || 'No se pudo actualizar el proyecto.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
   }
 
   return response.json()

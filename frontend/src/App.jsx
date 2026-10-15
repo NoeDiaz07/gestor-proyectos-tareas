@@ -6,9 +6,11 @@ import './App.css'
 
 function App() {
   const [selectedProjectId, setSelectedProjectId] = useState(null)
+  const [editingProject, setEditingProject] = useState(null)
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
@@ -38,9 +40,39 @@ function App() {
     return () => controller.abort()
   }, [])
 
+  function handleCreated(project) {
+    setProjects((current) => [...current, project])
+    setSuccess('')
+  }
+
+  function handleUpdated(project) {
+    setProjects((current) =>
+      current.map((item) =>
+        item.id === project.id ? project : item
+      )
+    )
+
+    setEditingProject(null)
+    setSelectedProjectId(null)
+    setSuccess('Proyecto actualizado correctamente.')
+  }
+
+  function handleEdit(project) {
+    setEditingProject(project)
+    setSelectedProjectId(null)
+    setSuccess('')
+  }
+
+  function handleCancelEdit() {
+    setEditingProject(null)
+    setSuccess('')
+  }
+
   return (
     <main>
       <h1>Proyectos</h1>
+
+      {success && <p role="status">{success}</p>}
 
       {selectedProjectId !== null && (
         <ProjectDetail
@@ -52,9 +84,11 @@ function App() {
 
       {!loading && !error && (
         <ProjectForm
-          onCreated={(project) =>
-            setProjects((current) => [...current, project])
-          }
+          key={editingProject?.id ?? 'create'}
+          project={editingProject}
+          onCreated={handleCreated}
+          onUpdated={handleUpdated}
+          onCancel={handleCancelEdit}
         />
       )}
 
@@ -68,27 +102,39 @@ function App() {
         ) : (
           <table>
             <caption>Proyectos registrados</caption>
-<thead>
-  <tr>
-    <th scope="col">Nombre</th>
-    <th scope="col">Descripción</th>
-    <th scope="col">Fecha de inicio</th>
-    <th scope="col">Acciones</th>
-  </tr>
-</thead>
+
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Fecha de inicio</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
 
             <tbody>
               {projects.map((project) => (
                 <tr key={project.id}>
                   <td>{project.name}</td>
-                  <td>{project.description || 'Sin descripción'}</td>
+                  <td>
+                    {project.description || 'Sin descripción'}
+                  </td>
                   <td>{project.startDate}</td>
                   <td>
                     <button
                       type="button"
-                      onClick={() => setSelectedProjectId(project.id)}
+                      onClick={() =>
+                        setSelectedProjectId(project.id)
+                      }
                     >
                       Ver detalle
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(project)}
+                    >
+                      Editar
                     </button>
                   </td>
                 </tr>

@@ -77,6 +77,13 @@
 - Se muestran ID, nombre, descripción y fecha, con estados de carga y error.
 - Verificado: abrir el detalle, cambiar de proyecto y cerrarlo.
 - Build y lint completados sin errores ni advertencias.
+### Edición de proyectos desde React
+- Se reutiliza el formulario para crear y editar mediante PUT.
+- Se actualiza la tabla al guardar y se muestra confirmación.
+- Se corrigen los atributos HTTP: PUT ejecutaba Delete; ahora cada ruta corresponde a su método.
+- Verificado con el proyecto ID 5: edición de descripción, persistencia tras recargar y consulta del detalle.
+- API compilada; build y lint del frontend correctos.
+- Pendiente: comprobar Cancelar edición.
 
 
 ## Pendiente

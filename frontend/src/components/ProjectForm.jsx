@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createProject } from '../services/api'
+import { createProject, updateProject } from '../services/api'
 
 const emptyForm = {
   name: '',
@@ -7,8 +7,24 @@ const emptyForm = {
   startDate: '',
 }
 
-function ProjectForm({ onCreated }) {
-  const [form, setForm] = useState(emptyForm)
+function ProjectForm({
+  project = null,
+  onCreated,
+  onUpdated,
+  onCancel,
+}) {
+  const editing = project !== null
+
+  const [form, setForm] = useState(() =>
+    project
+      ? {
+          name: project.name,
+          description: project.description ?? '',
+          startDate: project.startDate,
+        }
+      : { ...emptyForm }
+  )
+
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
@@ -16,31 +32,51 @@ function ProjectForm({ onCreated }) {
 
   function handleChange(event) {
     const { name, value } = event.target
-    setForm((current) => ({ ...current, [name]: value }))
+
+    setForm((current) => ({
+      ...current,
+      [name]: value,
+    }))
+
     setSuccess('')
   }
 
   async function handleSubmit(event) {
     event.preventDefault()
+
+    if (saving) {
+      return
+    }
+
     setSaving(true)
     setError('')
     setFieldErrors({})
     setSuccess('')
 
     try {
-      const project = await createProject({
+      const data = {
         name: form.name.trim(),
         description: form.description.trim() || null,
         startDate: form.startDate,
-      })
+      }
 
-      onCreated(project)
-      setForm(emptyForm)
-      setSuccess('Proyecto creado correctamente.')
+      if (editing) {
+        const updatedProject = await updateProject(project.id, data)
+        onUpdated(updatedProject)
+      } else {
+        const createdProject = await createProject(data)
+        onCreated(createdProject)
+
+        setForm({ ...emptyForm })
+        setSuccess('Proyecto creado correctamente.')
+      }
     } catch (err) {
       setError(
-        'No se pudo guardar. Revisa los datos y que la API esté funcionando.'
+        editing
+          ? `No se pudo actualizar. ${err.message}`
+          : 'No se pudo guardar. Revisa los datos y que la API esté funcionando.'
       )
+
       setFieldErrors(err.validationErrors || {})
     } finally {
       setSaving(false)
@@ -49,7 +85,7 @@ function ProjectForm({ onCreated }) {
 
   return (
     <section>
-      <h2>Crear proyecto</h2>
+      <h2>{editing ? 'Editar proyecto' : 'Crear proyecto'}</h2>
 
       <form onSubmit={handleSubmit}>
         <fieldset disabled={saving}>
@@ -66,8 +102,11 @@ function ProjectForm({ onCreated }) {
               maxLength={100}
             />
           </p>
+
           {fieldErrors.Name?.map((message) => (
-            <p key={message} role="alert">{message}</p>
+            <p key={message} role="alert">
+              {message}
+            </p>
           ))}
 
           <p>
@@ -80,8 +119,11 @@ function ProjectForm({ onCreated }) {
               maxLength={1000}
             />
           </p>
+
           {fieldErrors.Description?.map((message) => (
-            <p key={message} role="alert">{message}</p>
+            <p key={message} role="alert">
+              {message}
+            </p>
           ))}
 
           <p>
@@ -95,13 +137,26 @@ function ProjectForm({ onCreated }) {
               required
             />
           </p>
+
           {fieldErrors.StartDate?.map((message) => (
-            <p key={message} role="alert">{message}</p>
+            <p key={message} role="alert">
+              {message}
+            </p>
           ))}
 
           <button type="submit">
-            {saving ? 'Guardando…' : 'Guardar proyecto'}
+            {saving
+              ? 'Guardando…'
+              : editing
+                ? 'Guardar cambios'
+                : 'Guardar proyecto'}
           </button>
+
+          {editing && (
+            <button type="button" onClick={onCancel}>
+              Cancelar edición
+            </button>
+          )}
         </fieldset>
 
         {error && <p role="alert">{error}</p>}

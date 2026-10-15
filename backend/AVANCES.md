@@ -72,6 +72,11 @@
   - Mostrados errores por nombre inválido y API detenida.
   - Build correcto y Oxlint sin advertencias ni errores.
   - Pendiente: confirmar conservación de campos y rehabilitación de Guardar tras errores.
+  ### Consulta del detalle de proyectos desde React
+- Se agrega “Ver detalle” al listado y la consulta GET /api/projects/{id}.
+- Se muestran ID, nombre, descripción y fecha, con estados de carga y error.
+- Verificado: abrir el detalle, cambiar de proyecto y cerrarlo.
+- Build y lint completados sin errores ni advertencias.
 
 
 ## Pendiente

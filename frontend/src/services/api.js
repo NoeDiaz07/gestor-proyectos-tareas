@@ -40,3 +40,21 @@ export async function createProject(project) {
 
   return response.json()
 }
+export async function getProjectById(id, signal) {
+  const response = await fetch(`${API_URL}/projects/${id}`, {
+    signal,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      response.status === 404
+        ? 'El proyecto no existe.'
+        : `No se pudo cargar el proyecto (${response.status}).`
+    )
+  }
+
+  return response.json()
+}

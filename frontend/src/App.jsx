@@ -1,3 +1,4 @@
+import ProjectForm from './components/ProjectForm'
 import { useEffect, useState } from 'react'
 import { getProjects } from './services/api'
 import './App.css'
@@ -38,6 +39,13 @@ function App() {
   return (
     <main>
       <h1>Proyectos</h1>
+      {!loading && !error && (
+  <ProjectForm
+    onCreated={(project) =>
+      setProjects((current) => [...current, project])
+    }
+  />
+)}
 
       {loading && <p role="status">Cargando proyectos…</p>}
 

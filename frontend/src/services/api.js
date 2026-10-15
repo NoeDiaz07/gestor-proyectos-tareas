@@ -15,4 +15,28 @@ export async function getProjects(signal) {
   }
 
   return response.json();
+  
+}
+export async function createProject(project) {
+  const response = await fetch(`${API_URL}/projects`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(project),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      problem.detail || 'No se pudo guardar el proyecto.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
 }

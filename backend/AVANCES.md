@@ -66,6 +66,12 @@
   - API detenida: se muestra un error; al reiniciarla y recargar, vuelve el listado.
   - Build correcto y Oxlint sin advertencias ni errores.
   - Pendiente: formularios y acciones del CRUD en React.
+  - Creado ProjectForm y conectada la creación de proyectos desde React.
+  - Guardado confirmado en SQL Server.
+  - Mensaje de éxito, formulario limpio y tabla actualizada sin recargar.
+  - Mostrados errores por nombre inválido y API detenida.
+  - Build correcto y Oxlint sin advertencias ni errores.
+  - Pendiente: confirmar conservación de campos y rehabilitación de Guardar tras errores.
 
 
 ## Pendiente

@@ -122,6 +122,15 @@
 - Listado y consulta individual: 200.
 - Compilación correcta.
 - Pendientes: comprobar Location, campos obligatorios y límites de longitud.
+### Edición de responsables en la API
+- Creado UpdateAssigneeDto e implementado PUT /api/assignees/{id}.
+- Se normalizan el nombre y el correo.
+- Se permite conservar el correo propio y se rechaza el de otro responsable.
+- Verificado: actualización 200 y datos persistidos mediante consulta.
+- Identificador inexistente: 404.
+- Correo de otro responsable enviado en mayúsculas: 400.
+- Confirmado que el intento rechazado no modifica los datos.
+- Pendientes las restantes validaciones de campos y la eliminación.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

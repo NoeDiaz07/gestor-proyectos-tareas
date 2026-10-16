@@ -134,4 +134,75 @@ public class AssigneesController : ControllerBase
             new { id = assignee.Id },
             response);
     }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(
+        typeof(AssigneeResponseDto),
+        StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<AssigneeResponseDto>> Update(
+        int id,
+        UpdateAssigneeDto dto)
+    {
+        var assignee = await _context.Assignees.FindAsync(id);
+
+        if (assignee is null)
+        {
+            return NotFound();
+        }
+
+        var name = dto.Name.Trim();
+        var email = dto.Email.Trim().ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            ModelState.AddModelError(
+                nameof(dto.Name),
+                "El nombre es obligatorio.");
+
+            return ValidationProblem(ModelState);
+        }
+
+        var emailExists = await _context.Assignees
+            .AnyAsync(other =>
+                other.Id != id && other.Email == email);
+
+        if (emailExists)
+        {
+            ModelState.AddModelError(
+                nameof(dto.Email),
+                "Ya existe un responsable con este correo.");
+
+            return ValidationProblem(ModelState);
+        }
+
+        assignee.Name = name;
+        assignee.Email = email;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+            when (ex.InnerException is SqlException sqlException
+                && (sqlException.Number == 2601
+                    || sqlException.Number == 2627))
+        {
+            ModelState.AddModelError(
+                nameof(dto.Email),
+                "Ya existe un responsable con este correo.");
+
+            return ValidationProblem(ModelState);
+        }
+
+        return Ok(new AssigneeResponseDto
+        {
+            Id = assignee.Id,
+            Name = assignee.Name,
+            Email = assignee.Email
+        });
+    }
 }

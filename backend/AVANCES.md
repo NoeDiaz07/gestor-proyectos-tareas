@@ -127,3 +127,10 @@
 - Incorporar seguridad y autenticación; mecanismo pendiente de concretar.
 - Completar y registrar los resultados y evidencias de P01–P12.
 - Preparar README y demostración final.
+### Base de datos de responsables
+- Creado el modelo Assignee con Id, Name obligatorio de hasta 100 caracteres y Email obligatorio de hasta 254, con validación de formato.
+- Agregado Assignees al contexto y configurado un índice único para Email.
+- Creada y aplicada la migración CreateAssignees.
+- Verificados en SSMS la tabla vacía y el índice IX_Assignees_Email con is_unique = 1.
+- Compilación de la API correcta.
+- Pendientes los endpoints, la normalización del correo y las pruebas de validación mediante la API.

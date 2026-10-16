@@ -134,3 +134,9 @@
 - Verificados en SSMS la tabla vacía y el índice IX_Assignees_Email con is_unique = 1.
 - Compilación de la API correcta.
 - Pendientes los endpoints, la normalización del correo y las pruebas de validación mediante la API.
+### Consultas de responsables en la API
+- Creado AssigneeResponseDto con Id, Name y Email.
+- Implementados GET /api/assignees y GET /api/assignees/{id}.
+- Verificados el listado vacío y la respuesta 404 para un ID inexistente.
+- Compilación de la API correcta.
+- Pendiente: consulta de un responsable existente, creación, edición y eliminación.

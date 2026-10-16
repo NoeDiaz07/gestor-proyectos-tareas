@@ -112,6 +112,16 @@
 - Compilación de la API correcta en Visual Studio.
 - Compilación de producción del frontend correcta.
 - Análisis con Oxlint: 0 advertencias y 0 errores.
+### Creación de responsables en la API
+- Creado CreateAssigneeDto e implementado POST /api/assignees.
+- Se recortan espacios exteriores y se convierte el correo a minúsculas.
+- Se comprueban duplicados y se controla la restricción única de SQL Server.
+- Verificado: creación con 201 y datos normalizados.
+- Correo duplicado en mayúsculas: 400; el listado conserva un solo registro.
+- Correo con formato inválido: 400.
+- Listado y consulta individual: 200.
+- Compilación correcta.
+- Pendientes: comprobar Location, campos obligatorios y límites de longitud.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

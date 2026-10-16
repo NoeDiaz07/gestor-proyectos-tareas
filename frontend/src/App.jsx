@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
-import { getProjects } from './services/api'
+import { deleteProject, getProjects } from './services/api'
 import './App.css'
 
 function App() {
@@ -10,7 +10,9 @@ function App() {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [actionError, setActionError] = useState('')
   const [success, setSuccess] = useState('')
+  const [deletingId, setDeletingId] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -43,6 +45,7 @@ function App() {
   function handleCreated(project) {
     setProjects((current) => [...current, project])
     setSuccess('')
+    setActionError('')
   }
 
   function handleUpdated(project) {
@@ -54,6 +57,7 @@ function App() {
 
     setEditingProject(null)
     setSelectedProjectId(null)
+    setActionError('')
     setSuccess('Proyecto actualizado correctamente.')
   }
 
@@ -61,6 +65,7 @@ function App() {
     setEditingProject(project)
     setSelectedProjectId(null)
     setSuccess('')
+    setActionError('')
   }
 
   function handleCancelEdit() {
@@ -68,11 +73,54 @@ function App() {
     setSuccess('')
   }
 
+  async function handleDelete(project) {
+    if (deletingId !== null) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      `¿Eliminar el proyecto "${project.name}"? Esta acción no se puede deshacer.`
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    setDeletingId(project.id)
+    setActionError('')
+    setSuccess('')
+
+    try {
+      await deleteProject(project.id)
+
+      setProjects((current) =>
+        current.filter((item) => item.id !== project.id)
+      )
+
+      setSelectedProjectId((current) =>
+        current === project.id ? null : current
+      )
+
+      setEditingProject((current) =>
+        current?.id === project.id ? null : current
+      )
+
+      setSuccess('Proyecto eliminado correctamente.')
+    } catch (err) {
+      setActionError(
+        `No se pudo eliminar. ${err.message}`
+      )
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   return (
     <main>
       <h1>Proyectos</h1>
 
       {success && <p role="status">{success}</p>}
+      {actionError && <p role="alert">{actionError}</p>}
 
       {selectedProjectId !== null && (
         <ProjectDetail
@@ -83,13 +131,17 @@ function App() {
       )}
 
       {!loading && !error && (
-        <ProjectForm
-          key={editingProject?.id ?? 'create'}
-          project={editingProject}
-          onCreated={handleCreated}
-          onUpdated={handleUpdated}
-          onCancel={handleCancelEdit}
-        />
+        <fieldset disabled={deletingId !== null}>
+          <legend>Formulario de proyecto</legend>
+
+          <ProjectForm
+            key={editingProject?.id ?? 'create'}
+            project={editingProject}
+            onCreated={handleCreated}
+            onUpdated={handleUpdated}
+            onCancel={handleCancelEdit}
+          />
+        </fieldset>
       )}
 
       {loading && <p role="status">Cargando proyectos…</p>}
@@ -123,6 +175,7 @@ function App() {
                   <td>
                     <button
                       type="button"
+                      disabled={deletingId !== null}
                       onClick={() =>
                         setSelectedProjectId(project.id)
                       }
@@ -132,9 +185,20 @@ function App() {
 
                     <button
                       type="button"
+                      disabled={deletingId !== null}
                       onClick={() => handleEdit(project)}
                     >
                       Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={deletingId !== null}
+                      onClick={() => handleDelete(project)}
+                    >
+                      {deletingId === project.id
+                        ? 'Eliminando…'
+                        : 'Eliminar'}
                     </button>
                   </td>
                 </tr>

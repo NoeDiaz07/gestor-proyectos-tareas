@@ -84,6 +84,12 @@
 - Verificado con el proyecto ID 5: edición de descripción, persistencia tras recargar y consulta del detalle.
 - API compilada; build y lint del frontend correctos.
 - Pendiente: comprobar Cancelar edición.
+### Eliminación de proyectos desde React
+- Se agrega Eliminar con confirmación y bloqueo de controles mientras se procesa.
+- La tabla se actualiza tras eliminar, con mensajes de éxito y error.
+- Verificado: eliminación exitosa y ausencia del registro después de recargar.
+- Build y lint correctos.
+- Pendiente: verificar la cancelación de la confirmación y el bloqueo por tareas relacionadas.
 
 
 ## Pendiente

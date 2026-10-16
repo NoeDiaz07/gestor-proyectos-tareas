@@ -1,103 +1,129 @@
 ﻿# Registro de avances — Gestor de proyectos y tareas
 
 ## Forma de trabajo
-- C# y backend: Visual Studio.
-- React y frontend: Visual Studio Code.
-- Cada avance se comprueba antes de crear su commit y hacer push.
-- Cada commit explica qué cambió, para qué sirve y cómo se comprobó.
+- Backend en C#: Visual Studio.
+- Frontend en React: Visual Studio Code.
+- Cada avance se comprueba antes de confirmar los cambios y subirlos a GitHub.
+- Cada confirmación explica qué cambió, para qué sirve y cómo se comprobó.
 
-## Completado y comprobado
-- Entorno: Node, npm, Git, SDK .NET 10.0.401 y conexión local a SQL Server.
-- API ASP.NET Core con controladores y archivo .gitignore.
-  - Comprobación: compilación correcta y respuesta JSON de WeatherForecast.
-  - Commit publicado: f9fa41f.
-- Documentación OpenAPI.
-  - Comprobación: /openapi/v1.json muestra la operación GET de WeatherForecast.
-- Modelo Project: Id, Name, Description y StartDate.
-  - Nombre obligatorio, máximo 100 caracteres.
-  - Descripción opcional, máximo 1000 caracteres.
-  - Fecha de inicio sin hora.
-  - Comprobación: recompilación en Visual Studio con 0 errores.
-  - Commit publicado: 625c625.
-- Invitación enviada al mentor EzRD12.
-  - Último estado comprobado: pendiente de aceptación.
-- EF Core: SqlServer y Tools 10.0.13 instalados.
-  - Comprobación: compilación correcta en Visual Studio.
-  - Conexión de la API y migraciones pendientes.
+## Implementado y comprobado
+
+### Entorno y proyecto inicial
+- Instalados Node, npm, Git y SDK .NET 10.0.401.
+- Comprobada la conexión local a SQL Server.
+- Creada la API ASP.NET Core con controladores.
+- Configurado .gitignore para excluir archivos generados.
+- Comprobadas la compilación y la respuesta JSON de WeatherForecast.
+- Commit inicial publicado: f9fa41f.
+- Invitación enviada al mentor EzRD12; posteriormente recibidos sus comentarios sobre los commits.
+
+### Modelo Project
+- Campos: Id, Name, Description y StartDate.
+- Nombre obligatorio, máximo 100 caracteres.
+- Descripción opcional, máximo 1000 caracteres.
+- Fecha de inicio sin hora.
+- Compilación correcta.
+- Commit del modelo: 625c625.
+
+### Acceso a SQL Server
+- Instalados EF Core SqlServer y Tools 10.0.13.
 - Creado ApplicationDbContext con DbSet<Project>.
-  - Comprobación: compilación correcta, 0 errores.
-  - Sin conexión configurada ni migraciones todavía.
-- Registrado ApplicationDbContext en Program.cs y configurada la conexión local.
+- Registrado el contexto en Program.cs.
+- Configurada la conexión local a SQL Server.
 - Creada y aplicada la migración CreateProjects.
-  - Comprobación: Update-Database finalizó correctamente.
-  - SSMS confirma las columnas de Projects y el historial de migraciones.
-- Implementado GET /api/projects con ProjectResponseDto.
-  - Comprobación: compilación sin errores y respuesta [] desde la API.
-- Implementado GET /api/projects/{id}.
-  - Comprobación: compilación sin errores y respuesta 404 para ID inexistente.
-	- Implementado POST /api/projects con creación en SQL Server. Comprobación: compilación sin errores, respuesta con ID generado y datos esperados, y registro confirmado en dbo.Projects.
-	- Integrado Swagger UI para probar la API en desarrollo.
-- Documentadas las respuestas 201 y 400 del POST.
-- Comprobado POST: respuesta 201 y Location /api/projects/2.
-- Comprobada la consulta por ID de un proyecto existente.
-- Pruebas de validación del POST comprobadas en Swagger:
-  - Nombre con solo espacios: esperado 400; obtenido 400 con error en Name.
-  - Fecha omitida: esperado 400; obtenido 400 con error en StartDate.
-  - Nombre de 101 caracteres: esperado 400; obtenido 400 por máximo de 100.
-  - SSMS confirma que permanecen únicamente los dos proyectos válidos.
-  - Pendiente: probar el límite de la descripción y los demás casos de P04.
-  - Implementado PUT /api/projects/{id} con UpdateProjectDto.
-  - Comprobado: edición con 200 y cambio guardado en SQL Server.
-  - ID inexistente: 404. Nombre con solo espacios: 400.
-  - Pendiente: restantes validaciones del PUT y protección de fechas al incorporar tareas.
-	- Implementado DELETE /api/projects/{id}.
-  - Comprobado: respuesta 204 al eliminar el proyecto temporal 3.
-  - Verificación en SSMS: permanecen los proyectos 1 y 2.
-  - Pendiente: confirmar los 404 de consulta y borrado del ID eliminado.
-  - Pendiente: bloqueo 409 al incorporar tareas asociadas.
-  - Creada la base del frontend con React y Vite 8.3.4.
-  - Pantalla inicial comprobada en localhost:5173.
-  - Build correcto y Oxlint sin advertencias ni errores.
-  - node_modules y dist excluidos de Git.
-  - Pendiente: pantallas de proyectos y conexión con la API.
-  - Configurado CORS para React en localhost:5173, solo en desarrollo.
-- Creado services/api.js y listado de proyectos en App.jsx.
-  - Comprobado: aparecen los dos proyectos de SQL Server.
-  - API detenida: se muestra un error; al reiniciarla y recargar, vuelve el listado.
-  - Build correcto y Oxlint sin advertencias ni errores.
-  - Pendiente: formularios y acciones del CRUD en React.
-  - Creado ProjectForm y conectada la creación de proyectos desde React.
-  - Guardado confirmado en SQL Server.
-  - Mensaje de éxito, formulario limpio y tabla actualizada sin recargar.
-  - Mostrados errores por nombre inválido y API detenida.
-  - Build correcto y Oxlint sin advertencias ni errores.
-  - Pendiente: confirmar conservación de campos y rehabilitación de Guardar tras errores.
-  ### Consulta del detalle de proyectos desde React
-- Se agrega “Ver detalle” al listado y la consulta GET /api/projects/{id}.
-- Se muestran ID, nombre, descripción y fecha, con estados de carga y error.
-- Verificado: abrir el detalle, cambiar de proyecto y cerrarlo.
-- Build y lint completados sin errores ni advertencias.
-### Edición de proyectos desde React
-- Se reutiliza el formulario para crear y editar mediante PUT.
-- Se actualiza la tabla al guardar y se muestra confirmación.
-- Se corrigen los atributos HTTP: PUT ejecutaba Delete; ahora cada ruta corresponde a su método.
-- Verificado con el proyecto ID 5: edición de descripción, persistencia tras recargar y consulta del detalle.
-- API compilada; build y lint del frontend correctos.
-- Pendiente: comprobar Cancelar edición.
-### Eliminación de proyectos desde React
-- Se agrega Eliminar con confirmación y bloqueo de controles mientras se procesa.
-- La tabla se actualiza tras eliminar, con mensajes de éxito y error.
-- Verificado: eliminación exitosa y ausencia del registro después de recargar.
-- Build y lint correctos.
-- Pendiente: verificar la cancelación de la confirmación y el bloqueo por tareas relacionadas.
+- Update-Database finalizó correctamente.
+- Verificadas en SSMS la tabla Projects y el historial de migraciones.
 
+### Documentación de la API
+- Configurado OpenAPI.
+- Integrado Swagger UI para pruebas en desarrollo.
+- Documentadas las respuestas 201 y 400 de creación.
+- Comprobada la respuesta 201 y la cabecera Location al crear un proyecto.
+
+### Consulta de proyectos en la API
+- Implementados GET /api/projects y GET /api/projects/{id}.
+- Utilizado ProjectResponseDto para las respuestas.
+- Comprobados el listado, la consulta de un proyecto existente y el 404 para un ID inexistente.
+
+### Creación de proyectos en la API
+- Implementado POST /api/projects con CreateProjectDto.
+- Comprobados el ID generado y el guardado en SQL Server.
+- Verificaciones realizadas:
+  - Creación válida: 201 con cabecera Location.
+  - Nombre con solo espacios: 400.
+  - Fecha omitida: 400.
+  - Nombre de 101 caracteres: 400.
+  - Los intentos inválidos no agregaron registros, comprobado en SSMS.
+
+### Actualización de proyectos en la API
+- Implementado PUT /api/projects/{id} con UpdateProjectDto.
+- Comprobadas la respuesta 200 y la persistencia de los cambios.
+- Comprobados el 404 para un ID inexistente y el 400 para un nombre con solo espacios.
+- Durante la integración con React se detectó que HttpPut estaba asociado por error al método Delete.
+- Corregida la ubicación de los atributos: PUT actualiza y DELETE elimina.
+- Tras la corrección, comprobado que editar conserva el proyecto y guarda los cambios.
+
+### Eliminación de proyectos en la API
+- Implementado DELETE /api/projects/{id}.
+- Comprobada la respuesta 204 al eliminar.
+- Comprobado el 404 al repetir la eliminación de un registro eliminado.
+- Verificada la eliminación en SQL Server.
+
+### Base del frontend
+- Creado el frontend con React y Vite 8.3.4.
+- Comprobada la ejecución en http://localhost:5173/.
+- node_modules y dist excluidos de Git.
+- Configurado CORS para ese origen, únicamente en desarrollo.
+
+### Listado de proyectos desde React
+- Creado services/api.js.
+- Conectado App.jsx con GET /api/projects.
+- Mostrados los proyectos registrados y el mensaje de listado vacío.
+- Comprobado el mensaje de error con la API detenida.
+- Al reiniciar la API y recargar, el listado vuelve a cargar.
+
+### Creación de proyectos desde React
+- Creado ProjectForm y conectado con POST.
+- Guardado confirmado en SQL Server.
+- Comprobados el mensaje de éxito, la limpieza del formulario y la actualización de la tabla sin recargar.
+- Comprobados los mensajes de error por nombre inválido y API detenida.
+
+### Detalle de proyectos desde React
+- Agregado el botón Ver detalle y la consulta GET /api/projects/{id}.
+- Mostrados ID, nombre, descripción y fecha de inicio.
+- Incluidos estados de carga y error.
+- Comprobados la apertura, el cambio entre proyectos y el cierre del detalle.
+
+### Edición de proyectos desde React
+- Reutilizado el formulario para crear y editar.
+- Conectada la edición con PUT.
+- Comprobados el mensaje de éxito y la actualización de la tabla sin recargar.
+- Verificada la persistencia después de recargar y consultar el detalle.
+- Comprobado que Cancelar edición descarta los cambios y conserva los datos originales después de recargar.
+
+### Eliminación de proyectos desde React
+- Agregado Eliminar con confirmación.
+- Incluidos estado de procesamiento y mensajes de éxito y error.
+- La tabla se actualiza después de eliminar.
+- Comprobado que el proyecto eliminado sigue ausente después de recargar.
+- Comprobado que cancelar la confirmación conserva el proyecto después de recargar.
+
+### Verificación técnica
+- Compilación de la API correcta en Visual Studio.
+- Compilación de producción del frontend correcta.
+- Análisis con Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
-- Completar CRUD de proyectos desde SQL Server hasta React.
-- Completar responsables y tareas, relaciones, validaciones y filtros.
-- Crear y aplicar las migraciones que requieran responsables y tareas.
-- Incorporar seguridad y autenticación solicitadas adicionalmente.
-  - Detalles del mecanismo pendientes de concretar.
-- Registrar resultados y evidencias de las pruebas P01–P12.
+- Completar las validaciones y pruebas de proyectos:
+  - Límites de descripción y demás casos pendientes de P04.
+  - Restantes validaciones del PUT.
+  - Conservación de campos y rehabilitación del botón Guardar después de errores.
+  - Manejo de errores al editar y eliminar desde React.
+- Implementar responsables y tareas: modelos, DTOs, controladores y pantallas.
+- Crear y aplicar las migraciones correspondientes.
+- Implementar relaciones, validaciones y filtros de tareas.
+- Bloquear con 409 la eliminación de proyectos o responsables con tareas asociadas.
+- Validar las fechas de tareas respecto al inicio del proyecto y proteger las actualizaciones que las invaliden.
+- Incorporar seguridad y autenticación; mecanismo pendiente de concretar.
+- Completar y registrar los resultados y evidencias de P01–P12.
 - Preparar README y demostración final.
-- volver a comprobar la respuesta 201 Created y la cabecera Location

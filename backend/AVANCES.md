@@ -168,6 +168,11 @@
 - Después de recargar, el eliminado sigue ausente y los demás permanecen.
 - Compilación de producción correcta y Oxlint sin errores ni advertencias.
 - Pendientes: prueba con API detenida y bloqueo por tareas relacionadas.
+### Detalle de responsables desde React
+- Agregada getAssigneeById al servicio de la API.
+- Creado AssigneeDetail para mostrar ID, nombre y correo con estados de carga y error.
+- Integrado Ver detalle y Cerrar detalle en el listado de responsables.
+- Compilación correcta y Oxlint sin advertencias ni errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

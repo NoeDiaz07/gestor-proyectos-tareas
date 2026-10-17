@@ -190,3 +190,21 @@ export async function deleteAssignee(id) {
     )
   }
 }
+export async function getAssigneeById(id, signal) {
+  const response = await fetch(`${API_URL}/assignees/${id}`, {
+    signal,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      response.status === 404
+        ? 'El responsable no existe.'
+        : `No se pudo cargar el responsable (${response.status}).`
+    )
+  }
+
+  return response.json()
+} 

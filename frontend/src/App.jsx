@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import AssigneeDetail from './components/AssigneeDetail'
 import AssigneeForm from './components/AssigneeForm'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
@@ -27,6 +28,7 @@ function App() {
   const [assigneeSuccess, setAssigneeSuccess] = useState('')
   const [assigneeActionError, setAssigneeActionError] = useState('')
   const [deletingAssigneeId, setDeletingAssigneeId] = useState(null)
+  const [selectedAssigneeId, setSelectedAssigneeId] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -175,6 +177,7 @@ function App() {
 
   function handleAssigneeEdit(assignee) {
     setEditingAssignee(assignee)
+    setSelectedAssigneeId(null)
     setAssigneeSuccess('')
     setAssigneeActionError('')
   }
@@ -206,6 +209,10 @@ function App() {
 
       setAssignees((current) =>
         current.filter((item) => item.id !== assignee.id)
+      )
+
+      setSelectedAssigneeId((current) =>
+        current === assignee.id ? null : current
       )
 
       setEditingAssignee((current) =>
@@ -329,6 +336,14 @@ function App() {
           <p role="alert">{assigneeActionError}</p>
         )}
 
+        {selectedAssigneeId !== null && (
+          <AssigneeDetail
+            key={selectedAssigneeId}
+            assigneeId={selectedAssigneeId}
+            onClose={() => setSelectedAssigneeId(null)}
+          />
+        )}
+
         {!loadingAssignees && !assigneesError && (
           <fieldset disabled={deletingAssigneeId !== null}>
             <legend>Formulario de responsable</legend>
@@ -372,6 +387,16 @@ function App() {
                     <td>{assignee.name}</td>
                     <td>{assignee.email}</td>
                     <td>
+                      <button
+                        type="button"
+                        disabled={deletingAssigneeId !== null}
+                        onClick={() =>
+                          setSelectedAssigneeId(assignee.id)
+                        }
+                      >
+                        Ver detalle
+                      </button>
+
                       <button
                         type="button"
                         disabled={deletingAssigneeId !== null}

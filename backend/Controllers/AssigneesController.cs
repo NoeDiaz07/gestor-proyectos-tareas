@@ -205,4 +205,22 @@ public class AssigneesController : ControllerBase
             Email = assignee.Email
         });
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var assignee = await _context.Assignees.FindAsync(id);
+
+        if (assignee is null)
+        {
+            return NotFound();
+        }
+
+        _context.Assignees.Remove(assignee);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

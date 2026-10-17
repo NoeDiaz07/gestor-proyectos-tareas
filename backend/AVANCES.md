@@ -131,6 +131,12 @@
 - Correo de otro responsable enviado en mayúsculas: 400.
 - Confirmado que el intento rechazado no modifica los datos.
 - Pendientes las restantes validaciones de campos y la eliminación.
+### Eliminación de responsables en la API
+- Implementado DELETE /api/assignees/{id}.
+- Verificado: responsable temporal creado con 201 y eliminado con 204.
+- Repetir la eliminación y consultar el registro eliminado devuelve 404.
+- El listado conserva a Ana y Luis.
+- Pendiente: bloqueo 409 al incorporar tareas relacionadas.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

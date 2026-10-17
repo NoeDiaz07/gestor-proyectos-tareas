@@ -4,6 +4,7 @@ import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
 import {
   deleteProject,
+  deleteAssignee,
   getProjects,
   getAssignees,
 } from './services/api'
@@ -24,6 +25,8 @@ function App() {
   const [assigneesError, setAssigneesError] = useState('')
   const [editingAssignee, setEditingAssignee] = useState(null)
   const [assigneeSuccess, setAssigneeSuccess] = useState('')
+  const [assigneeActionError, setAssigneeActionError] = useState('')
+  const [deletingAssigneeId, setDeletingAssigneeId] = useState(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -155,6 +158,7 @@ function App() {
   function handleAssigneeCreated(assignee) {
     setAssignees((current) => [...current, assignee])
     setAssigneeSuccess('')
+    setAssigneeActionError('')
   }
 
   function handleAssigneeUpdated(assignee) {
@@ -165,17 +169,57 @@ function App() {
     )
 
     setEditingAssignee(null)
+    setAssigneeActionError('')
     setAssigneeSuccess('Responsable actualizado correctamente.')
   }
 
   function handleAssigneeEdit(assignee) {
     setEditingAssignee(assignee)
     setAssigneeSuccess('')
+    setAssigneeActionError('')
   }
 
   function handleAssigneeCancelEdit() {
     setEditingAssignee(null)
     setAssigneeSuccess('')
+  }
+
+  async function handleAssigneeDelete(assignee) {
+    if (deletingAssigneeId !== null) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      `¿Eliminar al responsable "${assignee.name}"? Esta acción no se puede deshacer.`
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    setDeletingAssigneeId(assignee.id)
+    setAssigneeActionError('')
+    setAssigneeSuccess('')
+
+    try {
+      await deleteAssignee(assignee.id)
+
+      setAssignees((current) =>
+        current.filter((item) => item.id !== assignee.id)
+      )
+
+      setEditingAssignee((current) =>
+        current?.id === assignee.id ? null : current
+      )
+
+      setAssigneeSuccess('Responsable eliminado correctamente.')
+    } catch (err) {
+      setAssigneeActionError(
+        `No se pudo eliminar. ${err.message}`
+      )
+    } finally {
+      setDeletingAssigneeId(null)
+    }
   }
 
   return (
@@ -211,7 +255,6 @@ function App() {
         )}
 
         {loading && <p role="status">Cargando proyectos…</p>}
-
         {error && <p role="alert">{error}</p>}
 
         {!loading && !error && (
@@ -282,14 +325,22 @@ function App() {
           <p role="status">{assigneeSuccess}</p>
         )}
 
+        {assigneeActionError && (
+          <p role="alert">{assigneeActionError}</p>
+        )}
+
         {!loadingAssignees && !assigneesError && (
-          <AssigneeForm
-            key={editingAssignee?.id ?? 'create-assignee'}
-            assignee={editingAssignee}
-            onCreated={handleAssigneeCreated}
-            onUpdated={handleAssigneeUpdated}
-            onCancel={handleAssigneeCancelEdit}
-          />
+          <fieldset disabled={deletingAssigneeId !== null}>
+            <legend>Formulario de responsable</legend>
+
+            <AssigneeForm
+              key={editingAssignee?.id ?? 'create-assignee'}
+              assignee={editingAssignee}
+              onCreated={handleAssigneeCreated}
+              onUpdated={handleAssigneeUpdated}
+              onCancel={handleAssigneeCancelEdit}
+            />
+          </fieldset>
         )}
 
         {loadingAssignees && (
@@ -323,11 +374,24 @@ function App() {
                     <td>
                       <button
                         type="button"
+                        disabled={deletingAssigneeId !== null}
                         onClick={() =>
                           handleAssigneeEdit(assignee)
                         }
                       >
                         Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={deletingAssigneeId !== null}
+                        onClick={() =>
+                          handleAssigneeDelete(assignee)
+                        }
+                      >
+                        {deletingAssigneeId === assignee.id
+                          ? 'Eliminando…'
+                          : 'Eliminar'}
                       </button>
                     </td>
                   </tr>

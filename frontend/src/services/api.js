@@ -169,3 +169,24 @@ export async function updateAssignee(id, assignee) {
 
   return response.json()
 }
+export async function deleteAssignee(id) {
+  const response = await fetch(`${API_URL}/assignees/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    throw new Error(
+      response.status === 404
+        ? 'El responsable ya no existe. Actualiza el listado.'
+        : response.status === 409
+          ? problem.detail ||
+            'No se puede eliminar porque tiene tareas relacionadas.'
+          : problem.detail || 'No se pudo eliminar el responsable.'
+    )
+  }
+}

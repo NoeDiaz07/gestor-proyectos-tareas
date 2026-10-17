@@ -160,6 +160,14 @@
 - Correo duplicado: muestra el error, conserva los campos y habilita nuevamente los botones.
 - El intento rechazado no modifica los datos del listado.
 - Compilación de producción correcta y Oxlint sin errores ni advertencias.
+### Eliminación de responsables desde React
+- Agregada deleteAssignee y el botón Eliminar con confirmación.
+- Incluidos bloqueo de controles durante la eliminación y mensajes de resultado.
+- Verificado: cancelar conserva el registro.
+- Confirmar elimina el registro y actualiza la tabla sin recargar.
+- Después de recargar, el eliminado sigue ausente y los demás permanecen.
+- Compilación de producción correcta y Oxlint sin errores ni advertencias.
+- Pendientes: prueba con API detenida y bloqueo por tareas relacionadas.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

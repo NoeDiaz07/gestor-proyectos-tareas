@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
-import { deleteProject, getProjects } from './services/api'
+import {
+  deleteProject,
+  getProjects,
+  getAssignees,
+} from './services/api'
 import './App.css'
 
 function App() {
@@ -13,6 +17,10 @@ function App() {
   const [actionError, setActionError] = useState('')
   const [success, setSuccess] = useState('')
   const [deletingId, setDeletingId] = useState(null)
+
+  const [assignees, setAssignees] = useState([])
+  const [loadingAssignees, setLoadingAssignees] = useState(true)
+  const [assigneesError, setAssigneesError] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
@@ -38,6 +46,34 @@ function App() {
     }
 
     loadProjects()
+
+    return () => controller.abort()
+  }, [])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadAssignees() {
+      try {
+        const data = await getAssignees(controller.signal)
+
+        if (!controller.signal.aborted) {
+          setAssignees(data)
+        }
+      } catch (err) {
+        if (!controller.signal.aborted) {
+          setAssigneesError(
+            `No se pudieron cargar los responsables. Comprueba que la API esté funcionando. ${err.message}`
+          )
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoadingAssignees(false)
+        }
+      }
+    }
+
+    loadAssignees()
 
     return () => controller.abort()
   }, [])
@@ -117,96 +153,138 @@ function App() {
 
   return (
     <main>
-      <h1>Proyectos</h1>
+      <h1>Gestor de proyectos y tareas</h1>
 
-      {success && <p role="status">{success}</p>}
-      {actionError && <p role="alert">{actionError}</p>}
+      <section aria-labelledby="projects-title">
+        <h2 id="projects-title">Proyectos</h2>
 
-      {selectedProjectId !== null && (
-        <ProjectDetail
-          key={selectedProjectId}
-          projectId={selectedProjectId}
-          onClose={() => setSelectedProjectId(null)}
-        />
-      )}
+        {success && <p role="status">{success}</p>}
+        {actionError && <p role="alert">{actionError}</p>}
 
-      {!loading && !error && (
-        <fieldset disabled={deletingId !== null}>
-          <legend>Formulario de proyecto</legend>
-
-          <ProjectForm
-            key={editingProject?.id ?? 'create'}
-            project={editingProject}
-            onCreated={handleCreated}
-            onUpdated={handleUpdated}
-            onCancel={handleCancelEdit}
+        {selectedProjectId !== null && (
+          <ProjectDetail
+            key={selectedProjectId}
+            projectId={selectedProjectId}
+            onClose={() => setSelectedProjectId(null)}
           />
-        </fieldset>
-      )}
+        )}
 
-      {loading && <p role="status">Cargando proyectos…</p>}
+        {!loading && !error && (
+          <fieldset disabled={deletingId !== null}>
+            <legend>Formulario de proyecto</legend>
 
-      {error && <p role="alert">{error}</p>}
+            <ProjectForm
+              key={editingProject?.id ?? 'create'}
+              project={editingProject}
+              onCreated={handleCreated}
+              onUpdated={handleUpdated}
+              onCancel={handleCancelEdit}
+            />
+          </fieldset>
+        )}
 
-      {!loading && !error && (
-        projects.length === 0 ? (
-          <p>No hay proyectos registrados.</p>
-        ) : (
-          <table>
-            <caption>Proyectos registrados</caption>
+        {loading && <p role="status">Cargando proyectos…</p>}
 
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Fecha de inicio</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
+        {error && <p role="alert">{error}</p>}
 
-            <tbody>
-              {projects.map((project) => (
-                <tr key={project.id}>
-                  <td>{project.name}</td>
-                  <td>
-                    {project.description || 'Sin descripción'}
-                  </td>
-                  <td>{project.startDate}</td>
-                  <td>
-                    <button
-                      type="button"
-                      disabled={deletingId !== null}
-                      onClick={() =>
-                        setSelectedProjectId(project.id)
-                      }
-                    >
-                      Ver detalle
-                    </button>
+        {!loading && !error && (
+          projects.length === 0 ? (
+            <p>No hay proyectos registrados.</p>
+          ) : (
+            <table>
+              <caption>Proyectos registrados</caption>
 
-                    <button
-                      type="button"
-                      disabled={deletingId !== null}
-                      onClick={() => handleEdit(project)}
-                    >
-                      Editar
-                    </button>
-
-                    <button
-                      type="button"
-                      disabled={deletingId !== null}
-                      onClick={() => handleDelete(project)}
-                    >
-                      {deletingId === project.id
-                        ? 'Eliminando…'
-                        : 'Eliminar'}
-                    </button>
-                  </td>
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Fecha de inicio</th>
+                  <th scope="col">Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )
-      )}
+              </thead>
+
+              <tbody>
+                {projects.map((project) => (
+                  <tr key={project.id}>
+                    <td>{project.name}</td>
+                    <td>
+                      {project.description || 'Sin descripción'}
+                    </td>
+                    <td>{project.startDate}</td>
+                    <td>
+                      <button
+                        type="button"
+                        disabled={deletingId !== null}
+                        onClick={() =>
+                          setSelectedProjectId(project.id)
+                        }
+                      >
+                        Ver detalle
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={deletingId !== null}
+                        onClick={() => handleEdit(project)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        type="button"
+                        disabled={deletingId !== null}
+                        onClick={() => handleDelete(project)}
+                      >
+                        {deletingId === project.id
+                          ? 'Eliminando…'
+                          : 'Eliminar'}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
+        )}
+      </section>
+
+      <section aria-labelledby="assignees-title">
+        <h2 id="assignees-title">Responsables</h2>
+
+        {loadingAssignees && (
+          <p role="status">Cargando responsables…</p>
+        )}
+
+        {assigneesError && (
+          <p role="alert">{assigneesError}</p>
+        )}
+
+        {!loadingAssignees && !assigneesError && (
+          assignees.length === 0 ? (
+            <p>No hay responsables registrados.</p>
+          ) : (
+            <table>
+              <caption>Responsables registrados</caption>
+
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Correo electrónico</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {assignees.map((assignee) => (
+                  <tr key={assignee.id}>
+                    <td>{assignee.name}</td>
+                    <td>{assignee.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )
+        )}
+      </section>
     </main>
   )
 }

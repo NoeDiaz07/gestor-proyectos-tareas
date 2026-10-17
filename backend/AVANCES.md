@@ -137,6 +137,13 @@
 - Repetir la eliminación y consultar el registro eliminado devuelve 404.
 - El listado conserva a Ana y Luis.
 - Pendiente: bloqueo 409 al incorporar tareas relacionadas.
+### Listado de responsables desde React
+- Agregada getAssignees al servicio de la API.
+- Incorporada la tabla de responsables con nombre y correo.
+- Incluidos estados de carga, error y listado vacío.
+- Verificado: aparecen Ana Pérez actualizada y Luis Gómez con sus correos.
+- Compilación de producción correcta y Oxlint sin errores ni advertencias.
+- Pendientes: probar los estados de error y vacío, e incorporar creación, detalle, edición y eliminación.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

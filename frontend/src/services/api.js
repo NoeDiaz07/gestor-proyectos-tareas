@@ -105,3 +105,19 @@ export async function deleteProject(id) {
     )
   }
 }
+export async function getAssignees(signal) {
+  const response = await fetch(`${API_URL}/assignees`, {
+    signal,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      `No se pudieron cargar los responsables (${response.status}).`
+    )
+  }
+
+  return response.json()
+}

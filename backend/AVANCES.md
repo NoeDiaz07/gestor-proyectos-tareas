@@ -152,6 +152,14 @@
 - El intento duplicado no agrega otra fila al listado.
 - Compilación de producción correcta y Oxlint sin errores ni advertencias.
 - Pendiente: comprobar el comportamiento con la API detenida. 
+### Edición de responsables desde React
+- Reutilizado AssigneeForm para crear y editar mediante PUT.
+- Agregado Editar al listado y actualización de la tabla sin recargar.
+- Verificada la persistencia del cambio después de recargar.
+- Cancelar edición conserva los datos originales.
+- Correo duplicado: muestra el error, conserva los campos y habilita nuevamente los botones.
+- El intento rechazado no modifica los datos del listado.
+- Compilación de producción correcta y Oxlint sin errores ni advertencias.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

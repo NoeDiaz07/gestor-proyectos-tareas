@@ -1,13 +1,31 @@
 import { useState } from 'react'
-import { createAssignee } from '../services/api'
+import {
+  createAssignee,
+  updateAssignee,
+} from '../services/api'
 
 const emptyForm = {
   name: '',
   email: '',
 }
 
-function AssigneeForm({ onCreated }) {
-  const [form, setForm] = useState({ ...emptyForm })
+function AssigneeForm({
+  assignee = null,
+  onCreated,
+  onUpdated,
+  onCancel,
+}) {
+  const editing = assignee !== null
+
+  const [form, setForm] = useState(() =>
+    assignee
+      ? {
+          name: assignee.name,
+          email: assignee.email,
+        }
+      : { ...emptyForm }
+  )
+
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
@@ -37,17 +55,30 @@ function AssigneeForm({ onCreated }) {
     setSuccess('')
 
     try {
-      const assignee = await createAssignee({
+      const data = {
         name: form.name.trim(),
         email: form.email.trim().toLowerCase(),
-      })
+      }
 
-      onCreated(assignee)
-      setForm({ ...emptyForm })
-      setSuccess('Responsable creado correctamente.')
+      if (editing) {
+        const updatedAssignee = await updateAssignee(
+          assignee.id,
+          data
+        )
+
+        onUpdated(updatedAssignee)
+      } else {
+        const createdAssignee = await createAssignee(data)
+
+        onCreated(createdAssignee)
+        setForm({ ...emptyForm })
+        setSuccess('Responsable creado correctamente.')
+      }
     } catch (err) {
       setError(
-        'No se pudo guardar. Revisa los datos y que la API esté funcionando.'
+        editing
+          ? `No se pudo actualizar. ${err.message}`
+          : 'No se pudo guardar. Revisa los datos y que la API esté funcionando.'
       )
 
       setFieldErrors(err.validationErrors || {})
@@ -58,7 +89,9 @@ function AssigneeForm({ onCreated }) {
 
   return (
     <section aria-labelledby="assignee-form-title">
-      <h3 id="assignee-form-title">Crear responsable</h3>
+      <h3 id="assignee-form-title">
+        {editing ? 'Editar responsable' : 'Crear responsable'}
+      </h3>
 
       <form onSubmit={handleSubmit}>
         <fieldset disabled={saving}>
@@ -104,8 +137,18 @@ function AssigneeForm({ onCreated }) {
           ))}
 
           <button type="submit">
-            {saving ? 'Guardando…' : 'Guardar responsable'}
+            {saving
+              ? 'Guardando…'
+              : editing
+                ? 'Guardar cambios'
+                : 'Guardar responsable'}
           </button>
+
+          {editing && (
+            <button type="button" onClick={onCancel}>
+              Cancelar edición
+            </button>
+          )}
         </fieldset>
 
         {error && <p role="alert">{error}</p>}

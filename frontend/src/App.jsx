@@ -1,5 +1,5 @@
-import AssigneeForm from './components/AssigneeForm'
 import { useEffect, useState } from 'react'
+import AssigneeForm from './components/AssigneeForm'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
 import {
@@ -22,6 +22,8 @@ function App() {
   const [assignees, setAssignees] = useState([])
   const [loadingAssignees, setLoadingAssignees] = useState(true)
   const [assigneesError, setAssigneesError] = useState('')
+  const [editingAssignee, setEditingAssignee] = useState(null)
+  const [assigneeSuccess, setAssigneeSuccess] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
@@ -144,12 +146,36 @@ function App() {
 
       setSuccess('Proyecto eliminado correctamente.')
     } catch (err) {
-      setActionError(
-        `No se pudo eliminar. ${err.message}`
-      )
+      setActionError(`No se pudo eliminar. ${err.message}`)
     } finally {
       setDeletingId(null)
     }
+  }
+
+  function handleAssigneeCreated(assignee) {
+    setAssignees((current) => [...current, assignee])
+    setAssigneeSuccess('')
+  }
+
+  function handleAssigneeUpdated(assignee) {
+    setAssignees((current) =>
+      current.map((item) =>
+        item.id === assignee.id ? assignee : item
+      )
+    )
+
+    setEditingAssignee(null)
+    setAssigneeSuccess('Responsable actualizado correctamente.')
+  }
+
+  function handleAssigneeEdit(assignee) {
+    setEditingAssignee(assignee)
+    setAssigneeSuccess('')
+  }
+
+  function handleAssigneeCancelEdit() {
+    setEditingAssignee(null)
+    setAssigneeSuccess('')
   }
 
   return (
@@ -251,13 +277,20 @@ function App() {
 
       <section aria-labelledby="assignees-title">
         <h2 id="assignees-title">Responsables</h2>
+
+        {assigneeSuccess && (
+          <p role="status">{assigneeSuccess}</p>
+        )}
+
         {!loadingAssignees && !assigneesError && (
-  <AssigneeForm
-    onCreated={(assignee) =>
-      setAssignees((current) => [...current, assignee])
-    }
-  />
-)}
+          <AssigneeForm
+            key={editingAssignee?.id ?? 'create-assignee'}
+            assignee={editingAssignee}
+            onCreated={handleAssigneeCreated}
+            onUpdated={handleAssigneeUpdated}
+            onCancel={handleAssigneeCancelEdit}
+          />
+        )}
 
         {loadingAssignees && (
           <p role="status">Cargando responsables…</p>
@@ -278,6 +311,7 @@ function App() {
                 <tr>
                   <th scope="col">Nombre</th>
                   <th scope="col">Correo electrónico</th>
+                  <th scope="col">Acciones</th>
                 </tr>
               </thead>
 
@@ -286,6 +320,16 @@ function App() {
                   <tr key={assignee.id}>
                     <td>{assignee.name}</td>
                     <td>{assignee.email}</td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleAssigneeEdit(assignee)
+                        }
+                      >
+                        Editar
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -144,3 +144,28 @@ export async function createAssignee(assignee) {
 
   return response.json()
 }
+export async function updateAssignee(id, assignee) {
+  const response = await fetch(`${API_URL}/assignees/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(assignee),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      response.status === 404
+        ? 'El responsable ya no existe.'
+        : problem.detail || 'No se pudo actualizar el responsable.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
+}

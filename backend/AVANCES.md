@@ -144,6 +144,14 @@
 - Verificado: aparecen Ana Pérez actualizada y Luis Gómez con sus correos.
 - Compilación de producción correcta y Oxlint sin errores ni advertencias.
 - Pendientes: probar los estados de error y vacío, e incorporar creación, detalle, edición y eliminación.
+### Creación de responsables desde React
+- Creado AssigneeForm y conectado con POST mediante createAssignee.
+- Verificados el mensaje de éxito, la limpieza del formulario y la actualización del listado sin recargar.
+- Confirmada la persistencia después de recargar.
+- Correo duplicado: se muestra el error, se conservan los campos y se rehabilita el botón Guardar.
+- El intento duplicado no agrega otra fila al listado.
+- Compilación de producción correcta y Oxlint sin errores ni advertencias.
+- Pendiente: comprobar el comportamiento con la API detenida. 
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

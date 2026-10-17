@@ -121,3 +121,26 @@ export async function getAssignees(signal) {
 
   return response.json()
 }
+export async function createAssignee(assignee) {
+  const response = await fetch(`${API_URL}/assignees`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(assignee),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      problem.detail || 'No se pudo crear el responsable.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
+}

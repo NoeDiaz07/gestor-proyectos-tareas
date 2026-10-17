@@ -1,3 +1,4 @@
+import AssigneeForm from './components/AssigneeForm'
 import { useEffect, useState } from 'react'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
@@ -250,6 +251,13 @@ function App() {
 
       <section aria-labelledby="assignees-title">
         <h2 id="assignees-title">Responsables</h2>
+        {!loadingAssignees && !assigneesError && (
+  <AssigneeForm
+    onCreated={(assignee) =>
+      setAssignees((current) => [...current, assignee])
+    }
+  />
+)}
 
         {loadingAssignees && (
           <p role="status">Cargando responsables…</p>

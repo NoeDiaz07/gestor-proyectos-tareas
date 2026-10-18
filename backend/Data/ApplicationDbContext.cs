@@ -15,6 +15,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Assignee> Assignees => Set<Assignee>();
 
+    public DbSet<TaskItem> Tasks => Set<TaskItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -22,5 +24,17 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Assignee>()
             .HasIndex(assignee => assignee.Email)
             .IsUnique();
+
+        modelBuilder.Entity<TaskItem>()
+            .HasOne(task => task.Project)
+            .WithMany()
+            .HasForeignKey(task => task.ProjectId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TaskItem>()
+            .HasOne(task => task.Assignee)
+            .WithMany()
+            .HasForeignKey(task => task.AssigneeId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -187,6 +187,16 @@
 - Depuración: inspeccionado tasks.Count = 0 y recorrido el caso inexistente hasta NotFound.
 - Compilación de la API correcta.
 - Pendientes: consulta de una tarea existente, creación, edición, eliminación y filtros.
+### Creación y validación de tareas
+- Creado CreateTaskDto e implementado POST /api/tasks.
+- Verificada creación con 201, título recortado y cabecera Location.
+- Vencimiento anterior al inicio del proyecto: 400 en DueDate.
+- Proyecto y responsable inexistentes: 400 en ambos campos.
+- Estado no permitido: 400 en Status.
+- Listado y consulta individual: 200 con nombres relacionados.
+- El listado contiene dos creaciones válidas equivalentes, IDs 1 y 2; no aparecen las tareas de pruebas inválidas.
+- Practicada la depuración del recorrido de validación y guardado.
+- Pendientes: restantes validaciones, edición, eliminación y filtros.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

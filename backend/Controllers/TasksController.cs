@@ -1,5 +1,6 @@
 ﻿using GestorProyectos.Api.Data;
 using GestorProyectos.Api.DTOs;
+using GestorProyectos.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -72,5 +73,95 @@ public class TasksController : ControllerBase
         }
 
         return Ok(task);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(
+        typeof(TaskResponseDto),
+        StatusCodes.Status201Created)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<TaskResponseDto>> Create(
+        CreateTaskDto dto)
+    {
+        var title = dto.Title.Trim();
+
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            ModelState.AddModelError(
+                nameof(dto.Title),
+                "El título es obligatorio.");
+
+            return ValidationProblem(ModelState);
+        }
+
+        var project = await _context.Projects
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                item => item.Id == dto.ProjectId!.Value);
+
+        var assignee = await _context.Assignees
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                item => item.Id == dto.AssigneeId!.Value);
+
+        if (project is null)
+        {
+            ModelState.AddModelError(
+                nameof(dto.ProjectId),
+                "El proyecto seleccionado no existe.");
+        }
+
+        if (assignee is null)
+        {
+            ModelState.AddModelError(
+                nameof(dto.AssigneeId),
+                "El responsable seleccionado no existe.");
+        }
+
+        if (project is not null
+            && dto.DueDate!.Value < project.StartDate)
+        {
+            ModelState.AddModelError(
+                nameof(dto.DueDate),
+                "El vencimiento no puede ser anterior al inicio del proyecto.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        var task = new TaskItem
+        {
+            Title = title,
+            Description = dto.Description?.Trim(),
+            Status = dto.Status,
+            DueDate = dto.DueDate!.Value,
+            ProjectId = project!.Id,
+            AssigneeId = assignee!.Id
+        };
+
+        _context.Tasks.Add(task);
+        await _context.SaveChangesAsync();
+
+        var response = new TaskResponseDto
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            Status = task.Status,
+            DueDate = task.DueDate,
+            ProjectId = task.ProjectId,
+            ProjectName = project.Name,
+            AssigneeId = task.AssigneeId,
+            AssigneeName = assignee.Name
+        };
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = task.Id },
+            response);
     }
 }

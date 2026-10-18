@@ -173,6 +173,20 @@
 - Creado AssigneeDetail para mostrar ID, nombre y correo con estados de carga y error.
 - Integrado Ver detalle y Cerrar detalle en el listado de responsables.
 - Compilación correcta y Oxlint sin advertencias ni errores.
+### Estructura de tareas en SQL Server
+- Creado TaskItem con título, descripción, estado, vencimiento, proyecto y responsable.
+- Agregado Tasks al contexto y configuradas ambas relaciones con Restrict.
+- Creada y aplicada la migración CreateTasks.
+- Verificados en SSMS la tabla vacía y las dos claves foráneas con NO_ACTION.
+- Compilación de la API correcta.
+- Pendientes: endpoints, validación de estados y fechas, filtros y respuestas 409 por dependencias.
+### Consultas de tareas y primera práctica de depuración
+- Creado TaskResponseDto con datos de la tarea y nombres del proyecto y responsable.
+- Implementados GET /api/tasks y GET /api/tasks/{id}.
+- Verificados el listado vacío con 200 y el identificador inexistente con 404.
+- Depuración: inspeccionado tasks.Count = 0 y recorrido el caso inexistente hasta NotFound.
+- Compilación de la API correcta.
+- Pendientes: consulta de una tarea existente, creación, edición, eliminación y filtros.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

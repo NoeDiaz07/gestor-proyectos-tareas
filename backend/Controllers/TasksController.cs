@@ -164,4 +164,94 @@ public class TasksController : ControllerBase
             new { id = task.Id },
             response);
     }
+
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(
+        typeof(TaskResponseDto),
+        StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TaskResponseDto>> Update(
+        int id,
+        UpdateTaskDto dto)
+    {
+        var task = await _context.Tasks.FindAsync(id);
+
+        if (task is null)
+        {
+            return NotFound();
+        }
+
+        var title = dto.Title.Trim();
+
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            ModelState.AddModelError(
+                nameof(dto.Title),
+                "El título es obligatorio.");
+
+            return ValidationProblem(ModelState);
+        }
+
+        var project = await _context.Projects
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                item => item.Id == dto.ProjectId!.Value);
+
+        var assignee = await _context.Assignees
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                item => item.Id == dto.AssigneeId!.Value);
+
+        if (project is null)
+        {
+            ModelState.AddModelError(
+                nameof(dto.ProjectId),
+                "El proyecto seleccionado no existe.");
+        }
+
+        if (assignee is null)
+        {
+            ModelState.AddModelError(
+                nameof(dto.AssigneeId),
+                "El responsable seleccionado no existe.");
+        }
+
+        if (project is not null
+            && dto.DueDate!.Value < project.StartDate)
+        {
+            ModelState.AddModelError(
+                nameof(dto.DueDate),
+                "El vencimiento no puede ser anterior al inicio del proyecto.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        task.Title = title;
+        task.Description = dto.Description?.Trim();
+        task.Status = dto.Status;
+        task.DueDate = dto.DueDate!.Value;
+        task.ProjectId = project!.Id;
+        task.AssigneeId = assignee!.Id;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new TaskResponseDto
+        {
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            Status = task.Status,
+            DueDate = task.DueDate,
+            ProjectId = task.ProjectId,
+            ProjectName = project.Name,
+            AssigneeId = task.AssigneeId,
+            AssigneeName = assignee.Name
+        });
+    }
 }

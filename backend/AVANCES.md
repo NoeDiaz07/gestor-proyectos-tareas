@@ -197,6 +197,16 @@
 - El listado contiene dos creaciones válidas equivalentes, IDs 1 y 2; no aparecen las tareas de pruebas inválidas.
 - Practicada la depuración del recorrido de validación y guardado.
 - Pendientes: restantes validaciones, edición, eliminación y filtros.
+### Edición de tareas en la API
+- Creado UpdateTaskDto e implementado PUT /api/tasks/{id}.
+- Verificada actualización con 200 de descripción, estado y responsable.
+- Consulta posterior confirma los cambios guardados.
+- Fecha anterior al inicio del proyecto: 400.
+- Tarea inexistente: 404.
+- Proyecto y responsable inexistentes: 400 en ambos campos.
+- Practicada la depuración comparando los datos anteriores de task con los nuevos de dto.
+- Compilación correcta.
+- Pendientes: restantes validaciones y comprobación final de persistencia tras el último rechazo por relaciones.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

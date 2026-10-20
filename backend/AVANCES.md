@@ -211,6 +211,11 @@
 - Implementado DELETE /api/tasks/{id}.
 - Comprobado con la tarea temporal 3: eliminación 204, consulta posterior 404 y segundo borrado 404.
 - Recorrido con el depurador en Visual Studio y compilación sin errores.
+### Protección de proyectos con tareas
+- DELETE /api/projects/{id} devuelve 409 si el proyecto tiene tareas.
+- Verificado con el depurador: hasTasks = true para el proyecto 6.
+- Swagger devolvió 409; consultas posteriores confirmaron que el proyecto y sus tareas 1 y 2 permanecen.
+- Compilación sin errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

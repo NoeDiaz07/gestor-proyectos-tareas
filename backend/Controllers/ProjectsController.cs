@@ -2,6 +2,7 @@
 using GestorProyectos.Api.DTOs;
 using GestorProyectos.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace GestorProyectos.Api.Controllers;
@@ -59,7 +60,9 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(
+        typeof(ProjectResponseDto),
+        StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<ProjectResponseDto>> Create(
         CreateProjectDto dto)
@@ -89,7 +92,9 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(ProjectResponseDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(
+        typeof(ProjectResponseDto),
+        StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProjectResponseDto>> Update(
@@ -121,6 +126,9 @@ public class ProjectsController : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(
+        typeof(ProblemDetails),
+        StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
         var project = await _context.Projects.FindAsync(id);
@@ -130,8 +138,32 @@ public class ProjectsController : ControllerBase
             return NotFound();
         }
 
+        var hasTasks = await _context.Tasks
+            .AnyAsync(task => task.ProjectId == id);
+
+        if (hasTasks)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "No se puede eliminar el proyecto.",
+                detail: "El proyecto tiene tareas relacionadas.");
+        }
+
         _context.Projects.Remove(project);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+            when (ex.InnerException is SqlException sqlException
+                && sqlException.Number == 547)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "No se puede eliminar el proyecto.",
+                detail: "El proyecto tiene registros relacionados que impiden eliminarlo.");
+        }
 
         return NoContent();
     }

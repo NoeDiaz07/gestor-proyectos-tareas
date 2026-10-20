@@ -254,4 +254,22 @@ public class TasksController : ControllerBase
             AssigneeName = assignee.Name
         });
     }
+
+    [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var task = await _context.Tasks.FindAsync(id);
+
+        if (task is null)
+        {
+            return NotFound();
+        }
+
+            _context.Tasks.Remove(task);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

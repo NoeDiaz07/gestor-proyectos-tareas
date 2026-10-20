@@ -207,6 +207,10 @@
 - Practicada la depuración comparando los datos anteriores de task con los nuevos de dto.
 - Compilación correcta.
 - Pendientes: restantes validaciones y comprobación final de persistencia tras el último rechazo por relaciones.
+### Eliminación de tareas en la API
+- Implementado DELETE /api/tasks/{id}.
+- Comprobado con la tarea temporal 3: eliminación 204, consulta posterior 404 y segundo borrado 404.
+- Recorrido con el depurador en Visual Studio y compilación sin errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

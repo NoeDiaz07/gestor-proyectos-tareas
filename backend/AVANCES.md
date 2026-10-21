@@ -216,11 +216,21 @@
 - Verificado con el depurador: hasTasks = true para el proyecto 6.
 - Swagger devolvió 409; consultas posteriores confirmaron que el proyecto y sus tareas 1 y 2 permanecen.
 - Compilación sin errores.
+### Protección de responsables con tareas
+- DELETE /api/assignees/{id} devuelve 409 si el responsable tiene tareas.
+- Depuración: hasTasks = true para el responsable 1.
+- Comprobado: respuesta 409 y conservación del responsable y su tarea relacionada.
+- Compilación sin errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:
   - Límites de descripción y demás casos pendientes de P04.
   - Restantes validaciones del PUT.
+  ### Protección de responsables con tareas
+- DELETE /api/assignees/{id} devuelve 409 si el responsable tiene tareas.
+- Depuración: hasTasks = true para el responsable 1.
+- Comprobado: respuesta 409 y conservación del responsable y su tarea relacionada.
+- Compilación sin errores.
   - Conservación de campos y rehabilitación del botón Guardar después de errores.
   - Manejo de errores al editar y eliminar desde React.
 - Implementar responsables y tareas: modelos, DTOs, controladores y pantallas.

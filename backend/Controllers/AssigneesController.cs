@@ -209,6 +209,9 @@ public class AssigneesController : ControllerBase
     [HttpDelete("{id:int}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(
+        typeof(ProblemDetails),
+        StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(int id)
     {
         var assignee = await _context.Assignees.FindAsync(id);
@@ -218,8 +221,32 @@ public class AssigneesController : ControllerBase
             return NotFound();
         }
 
+        var hasTasks = await _context.Tasks
+            .AnyAsync(task => task.AssigneeId == id);
+
+        if (hasTasks)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "No se puede eliminar el responsable.",
+                detail: "El responsable tiene tareas relacionadas.");
+        }
+
         _context.Assignees.Remove(assignee);
-        await _context.SaveChangesAsync();
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+            when (ex.InnerException is SqlException sqlException
+                && sqlException.Number == 547)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "No se puede eliminar el responsable.",
+                detail: "El responsable tiene registros relacionados que impiden eliminarlo.");
+        }
 
         return NoContent();
     }

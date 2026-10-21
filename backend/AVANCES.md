@@ -226,7 +226,8 @@
 - Depuración: hasTasksBeforeStartDate = true.
 - Comprobado con el proyecto 6: inicio propuesto 2026-10-21 devuelve 400 en StartDate.
 - Consulta posterior confirma que conserva el inicio 2026-10-10.
-- Pendiente: comprobar una fecha permitida y el caso de igualdad.
+- Comprobado: inicio igual al vencimiento (2026-10-20) permitido con 200.
+- Comprobado: restauración del inicio a 2026-10-10 y consulta posterior correctas.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

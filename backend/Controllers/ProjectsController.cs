@@ -95,7 +95,9 @@ public class ProjectsController : ControllerBase
     [ProducesResponseType(
         typeof(ProjectResponseDto),
         StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ProjectResponseDto>> Update(
         int id,
@@ -108,9 +110,25 @@ public class ProjectsController : ControllerBase
             return NotFound();
         }
 
+        var newStartDate = dto.StartDate!.Value;
+
+        var hasTasksBeforeStartDate = await _context.Tasks
+            .AnyAsync(task =>
+                task.ProjectId == id
+                && task.DueDate < newStartDate);
+
+        if (hasTasksBeforeStartDate)
+        {
+            ModelState.AddModelError(
+                nameof(dto.StartDate),
+                "La fecha de inicio no puede ser posterior al vencimiento de una tarea del proyecto.");
+
+            return ValidationProblem(ModelState);
+        }
+
         project.Name = dto.Name.Trim();
         project.Description = dto.Description?.Trim();
-        project.StartDate = dto.StartDate!.Value;
+        project.StartDate = newStartDate;
 
         await _context.SaveChangesAsync();
 

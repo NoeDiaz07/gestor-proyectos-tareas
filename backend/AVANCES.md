@@ -221,6 +221,12 @@
 - Depuración: hasTasks = true para el responsable 1.
 - Comprobado: respuesta 409 y conservación del responsable y su tarea relacionada.
 - Compilación sin errores.
+### Validación del inicio de proyectos con tareas
+- PUT rechaza una fecha de inicio posterior al vencimiento de alguna tarea del proyecto.
+- Depuración: hasTasksBeforeStartDate = true.
+- Comprobado con el proyecto 6: inicio propuesto 2026-10-21 devuelve 400 en StartDate.
+- Consulta posterior confirma que conserva el inicio 2026-10-10.
+- Pendiente: comprobar una fecha permitida y el caso de igualdad.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:
@@ -231,6 +237,12 @@
 - Depuración: hasTasks = true para el responsable 1.
 - Comprobado: respuesta 409 y conservación del responsable y su tarea relacionada.
 - Compilación sin errores.
+### Validación del inicio de proyectos con tareas
+- PUT rechaza una fecha de inicio posterior al vencimiento de alguna tarea del proyecto.
+- Depuración: hasTasksBeforeStartDate = true.
+- Comprobado con el proyecto 6: inicio propuesto 2026-10-21 devuelve 400 en StartDate.
+- Consulta posterior confirma que conserva el inicio 2026-10-10.
+- Pendiente: comprobar una fecha permitida y el caso de igualdad.
   - Conservación de campos y rehabilitación del botón Guardar después de errores.
   - Manejo de errores al editar y eliminar desde React.
 - Implementar responsables y tareas: modelos, DTOs, controladores y pantallas.

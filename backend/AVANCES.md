@@ -228,6 +228,13 @@
 - Consulta posterior confirma que conserva el inicio 2026-10-10.
 - Comprobado: inicio igual al vencimiento (2026-10-20) permitido con 200.
 - Comprobado: restauración del inicio a 2026-10-10 y consulta posterior correctas.
+### Filtros de tareas en la API
+- GET /api/tasks permite filtrar por proyecto, responsable y estado.
+- Los filtros combinados exigen que se cumplan todas las condiciones.
+- Comprobados filtros individuales, combinados y listado sin filtros.
+- Sin coincidencias: 200 con lista vacía.
+- Estado inválido: 400 con error en status.
+- Compilación correcta y consulta recorrida con el depurador.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

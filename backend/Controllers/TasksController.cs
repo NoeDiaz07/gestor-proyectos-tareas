@@ -21,10 +21,64 @@ public class TasksController : ControllerBase
     [ProducesResponseType(
         typeof(List<TaskResponseDto>),
         StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<TaskResponseDto>>> GetAll()
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<List<TaskResponseDto>>> GetAll(
+        [FromQuery] int? projectId = null,
+        [FromQuery] int? assigneeId = null,
+        [FromQuery] string? status = null)
     {
-        var tasks = await _context.Tasks
-            .AsNoTracking()
+        if (projectId.HasValue && projectId.Value <= 0)
+        {
+            ModelState.AddModelError(
+                nameof(projectId),
+                "El ID del proyecto debe ser mayor que cero.");
+        }
+
+        if (assigneeId.HasValue && assigneeId.Value <= 0)
+        {
+            ModelState.AddModelError(
+                nameof(assigneeId),
+                "El ID del responsable debe ser mayor que cero.");
+        }
+
+        if (status is not null
+            && status != "Pending"
+            && status != "InProgress"
+            && status != "Completed")
+        {
+            ModelState.AddModelError(
+                nameof(status),
+                "El estado debe ser Pending, InProgress o Completed.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
+        var query = _context.Tasks.AsNoTracking();
+
+        if (projectId.HasValue)
+        {
+            query = query.Where(task =>
+                task.ProjectId == projectId.Value);
+        }
+
+        if (assigneeId.HasValue)
+        {
+            query = query.Where(task =>
+                task.AssigneeId == assigneeId.Value);
+        }
+
+        if (status is not null)
+        {
+            query = query.Where(task =>
+                task.Status == status);
+        }
+
+        var tasks = await query
             .OrderBy(task => task.Id)
             .Select(task => new TaskResponseDto
             {
@@ -267,7 +321,7 @@ public class TasksController : ControllerBase
             return NotFound();
         }
 
-            _context.Tasks.Remove(task);
+        _context.Tasks.Remove(task);
         await _context.SaveChangesAsync();
 
         return NoContent();

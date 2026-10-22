@@ -3,6 +3,7 @@ import AssigneeDetail from './components/AssigneeDetail'
 import AssigneeForm from './components/AssigneeForm'
 import ProjectDetail from './components/ProjectDetail'
 import ProjectForm from './components/ProjectForm'
+import TaskList from './components/TaskList'
 import {
   deleteProject,
   deleteAssignee,
@@ -426,6 +427,8 @@ function App() {
           )
         )}
       </section>
+
+      <TaskList />
     </main>
   )
 }

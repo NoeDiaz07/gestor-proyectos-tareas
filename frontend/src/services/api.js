@@ -198,7 +198,7 @@ export async function getAssigneeById(id, signal) {
     },
   })
 
-  if (!response.ok) {
+  if (!response.ok) {       
     throw new Error(
       response.status === 404
         ? 'El responsable no existe.'
@@ -208,3 +208,38 @@ export async function getAssigneeById(id, signal) {
 
   return response.json()
 } 
+export async function getTasks(filters = {}, signal) {
+  const params = new URLSearchParams()
+
+  for (const name of ['projectId', 'assigneeId', 'status']) {
+    const value = filters[name]
+
+    if (value !== undefined && value !== null && value !== '') {
+      params.set(name, String(value))
+    }
+  }
+
+  const queryString = params.toString()
+  const url = `${API_URL}/tasks${queryString ? `?${queryString}` : ''}`
+
+  const response = await fetch(url, {
+    signal,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      problem.detail ||
+        `No se pudieron cargar las tareas (${response.status}).`
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
+}

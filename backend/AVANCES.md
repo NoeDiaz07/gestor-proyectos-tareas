@@ -235,6 +235,13 @@
 - Sin coincidencias: 200 con lista vacía.
 - Estado inválido: 400 con error en status.
 - Compilación correcta y consulta recorrida con el depurador.
+### Listado de tareas desde React
+- Creada getTasks en api.js, con soporte para filtros opcionales.
+- Creado TaskList e integrado en App.jsx.
+- Comprobadas las dos tareas con estado en español, proyecto y responsable.
+- API detenida: aparece un error. Al reiniciarla y recargar, vuelve el listado.
+- Build correcto y Oxlint sin advertencias ni errores.
+- Pendiente: controles de filtros y acciones de tareas en React.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

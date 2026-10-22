@@ -428,7 +428,10 @@ function App() {
         )}
       </section>
 
-      <TaskList />
+     <TaskList
+  projects={projects}
+  assignees={assignees}
+/>
     </main>
   )
 }

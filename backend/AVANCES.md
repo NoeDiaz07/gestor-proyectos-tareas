@@ -242,6 +242,12 @@
 - API detenida: aparece un error. Al reiniciarla y recargar, vuelve el listado.
 - Build correcto y Oxlint sin advertencias ni errores.
 - Pendiente: controles de filtros y acciones de tareas en React.
+### Filtros de tareas desde React
+- Agregados desplegables de proyecto, responsable y estado.
+- Aplicar filtros consulta la API con la selección.
+- Limpiar filtros restablece los controles y recupera el listado completo.
+- Comprobados: combinación con una tarea, combinación sin coincidencias y limpieza con recuperación de las dos tareas.
+- Build correcto y Oxlint sin advertencias ni errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

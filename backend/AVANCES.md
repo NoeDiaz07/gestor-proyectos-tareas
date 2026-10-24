@@ -248,6 +248,20 @@
 - Limpiar filtros restablece los controles y recupera el listado completo.
 - Comprobados: combinación con una tarea, combinación sin coincidencias y limpieza con recuperación de las dos tareas.
 - Build correcto y Oxlint sin advertencias ni errores.
+### Creación de tareas desde React
+- Agregada la función createTask en services/api.js.
+- Creado TaskForm con título, descripción, estado, vencimiento,
+  proyecto y responsable.
+- Integrado el formulario en TaskList.
+- Al crear una tarea, se limpian los filtros y se consulta
+  nuevamente el listado.
+- Comprobada la creación desde React: mensaje de éxito,
+  formulario limpio y nueva tarea visible en la tabla.
+- Comprobado el rechazo de una fecha de vencimiento anterior
+  al inicio del proyecto: error visible junto al campo y
+  listado sin registros adicionales.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

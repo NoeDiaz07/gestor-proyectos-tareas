@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import TaskForm from './TaskForm'
 import { getTasks } from '../services/api'
 
 const statusLabels = {
@@ -102,12 +103,8 @@ function TaskResults({ filters }) {
           {tasks.map((task) => (
             <tr key={task.id}>
               <td>{task.title}</td>
-              <td>
-                {task.description || 'Sin descripción'}
-              </td>
-              <td>
-                {statusLabels[task.status] || task.status}
-              </td>
+              <td>{task.description || 'Sin descripción'}</td>
+              <td>{statusLabels[task.status] || task.status}</td>
               <td>{task.dueDate}</td>
               <td>{task.projectName}</td>
               <td>{task.assigneeName}</td>
@@ -148,9 +145,21 @@ function TaskList({ projects = [], assignees = [] }) {
     setRequestId((current) => current + 1)
   }
 
+  function handleTaskCreated() {
+    setFilters({ ...emptyFilters })
+    setAppliedFilters({ ...emptyFilters })
+    setRequestId((current) => current + 1)
+  }
+
   return (
     <section aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tareas</h2>
+
+      <TaskForm
+        projects={projects}
+        assignees={assignees}
+        onCreated={handleTaskCreated}
+      />
 
       <form onSubmit={handleSubmit}>
         <fieldset>

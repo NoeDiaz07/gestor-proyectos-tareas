@@ -243,3 +243,26 @@ export async function getTasks(filters = {}, signal) {
 
   return response.json()
 }
+export async function createTask(task) {
+  const response = await fetch(`${API_URL}/tasks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(task),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      problem.detail || 'No se pudo crear la tarea.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
+}

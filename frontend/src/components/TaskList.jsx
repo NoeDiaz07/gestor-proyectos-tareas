@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import TaskDetail from './TaskDetail'
 import TaskForm from './TaskForm'
 import { getTasks } from '../services/api'
 
@@ -14,7 +15,7 @@ const emptyFilters = {
   status: '',
 }
 
-function TaskResults({ filters }) {
+function TaskResults({ filters, onViewDetail }) {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -96,6 +97,7 @@ function TaskResults({ filters }) {
             <th scope="col">Vencimiento</th>
             <th scope="col">Proyecto</th>
             <th scope="col">Responsable</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
 
@@ -108,6 +110,14 @@ function TaskResults({ filters }) {
               <td>{task.dueDate}</td>
               <td>{task.projectName}</td>
               <td>{task.assigneeName}</td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() => onViewDetail(task.id)}
+                >
+                  Ver detalle
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -122,6 +132,7 @@ function TaskList({ projects = [], assignees = [] }) {
     ...emptyFilters,
   })
   const [requestId, setRequestId] = useState(0)
+  const [selectedTaskId, setSelectedTaskId] = useState(null)
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -135,17 +146,20 @@ function TaskList({ projects = [], assignees = [] }) {
   function handleSubmit(event) {
     event.preventDefault()
 
+    setSelectedTaskId(null)
     setAppliedFilters({ ...filters })
     setRequestId((current) => current + 1)
   }
 
   function handleClear() {
+    setSelectedTaskId(null)
     setFilters({ ...emptyFilters })
     setAppliedFilters({ ...emptyFilters })
     setRequestId((current) => current + 1)
   }
 
   function handleTaskCreated() {
+    setSelectedTaskId(null)
     setFilters({ ...emptyFilters })
     setAppliedFilters({ ...emptyFilters })
     setRequestId((current) => current + 1)
@@ -154,6 +168,14 @@ function TaskList({ projects = [], assignees = [] }) {
   return (
     <section aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tareas</h2>
+
+      {selectedTaskId !== null && (
+        <TaskDetail
+          key={selectedTaskId}
+          taskId={selectedTaskId}
+          onClose={() => setSelectedTaskId(null)}
+        />
+      )}
 
       <TaskForm
         projects={projects}
@@ -235,6 +257,7 @@ function TaskList({ projects = [], assignees = [] }) {
       <TaskResults
         key={requestId}
         filters={appliedFilters}
+        onViewDetail={setSelectedTaskId}
       />
     </section>
   )

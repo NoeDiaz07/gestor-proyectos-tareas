@@ -266,3 +266,21 @@ export async function createTask(task) {
 
   return response.json()
 }
+export async function getTaskById(id, signal) {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
+    signal,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      response.status === 404
+        ? 'La tarea no existe.'
+        : `No se pudo cargar la tarea (${response.status}).`
+    )
+  }
+
+  return response.json()
+}

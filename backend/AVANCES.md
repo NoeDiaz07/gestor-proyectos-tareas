@@ -262,6 +262,15 @@
   listado sin registros adicionales.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Consulta del detalle de tareas desde React
+- Agregada getTaskById en services/api.js.
+- Creado TaskDetail con estados de carga y error.
+- Agregado el botón Ver detalle al listado de tareas.
+- Se muestran ID, título, descripción, estado, vencimiento,
+  proyecto y responsable.
+- Verificado: abrir el detalle, cambiar entre tareas y cerrarlo.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

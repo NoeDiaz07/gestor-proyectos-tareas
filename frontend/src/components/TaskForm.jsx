@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createTask } from '../services/api'
+import { createTask, updateTask } from '../services/api'
 
 const emptyForm = {
   title: '',
@@ -10,8 +10,29 @@ const emptyForm = {
   assigneeId: '',
 }
 
-function TaskForm({ projects = [], assignees = [], onCreated }) {
-  const [form, setForm] = useState({ ...emptyForm })
+function TaskForm({
+  task = null,
+  projects = [],
+  assignees = [],
+  onCreated,
+  onUpdated,
+  onCancel,
+}) {
+  const isEditing = task !== null
+
+  const [form, setForm] = useState(() =>
+    task
+      ? {
+          title: task.title,
+          description: task.description || '',
+          status: task.status,
+          dueDate: task.dueDate,
+          projectId: String(task.projectId),
+          assigneeId: String(task.assigneeId),
+        }
+      : { ...emptyForm }
+  )
+
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [fieldErrors, setFieldErrors] = useState({})
@@ -62,29 +83,37 @@ function TaskForm({ projects = [], assignees = [], onCreated }) {
       return
     }
 
+    const data = {
+      title: form.title.trim(),
+      description: form.description.trim() || null,
+      status: form.status,
+      dueDate: form.dueDate,
+      projectId: Number(form.projectId),
+      assigneeId: Number(form.assigneeId),
+    }
+
     setSaving(true)
 
     try {
-      const task = await createTask({
-        title: form.title.trim(),
-        description: form.description.trim() || null,
-        status: form.status,
-        dueDate: form.dueDate,
-        projectId: Number(form.projectId),
-        assigneeId: Number(form.assigneeId),
-      })
+      if (isEditing) {
+        const updatedTask = await updateTask(task.id, data)
+        onUpdated(updatedTask)
+      } else {
+        const createdTask = await createTask(data)
 
-      setForm({ ...emptyForm })
-      setSuccess('Tarea creada correctamente.')
-      onCreated(task)
+        setForm({ ...emptyForm })
+        setSuccess('Tarea creada correctamente.')
+        onCreated(createdTask)
+      }
     } catch (err) {
       const validationErrors = err.validationErrors || {}
+      const action = isEditing ? 'actualizar' : 'guardar'
 
       setFieldErrors(validationErrors)
       setError(
         Object.keys(validationErrors).length > 0
-          ? 'No se pudo guardar. Revisa los campos indicados.'
-          : `No se pudo guardar. ${err.message}`
+          ? `No se pudo ${action}. Revisa los campos indicados.`
+          : `No se pudo ${action}. ${err.message}`
       )
     } finally {
       setSaving(false)
@@ -93,11 +122,13 @@ function TaskForm({ projects = [], assignees = [], onCreated }) {
 
   return (
     <section aria-labelledby="task-form-title">
-      <h3 id="task-form-title">Crear tarea</h3>
+      <h3 id="task-form-title">
+        {isEditing ? 'Editar tarea' : 'Crear tarea'}
+      </h3>
 
       {missingOptions && (
         <p role="status">
-          Para crear una tarea, debe haber al menos un proyecto
+          Para guardar una tarea, debe haber al menos un proyecto
           y un responsable disponibles.
         </p>
       )}
@@ -176,6 +207,7 @@ function TaskForm({ projects = [], assignees = [], onCreated }) {
               required
             >
               <option value="">Selecciona un proyecto</option>
+
               {projects.map((project) => (
                 <option key={project.id} value={project.id}>
                   {project.name}
@@ -196,6 +228,7 @@ function TaskForm({ projects = [], assignees = [], onCreated }) {
               required
             >
               <option value="">Selecciona un responsable</option>
+
               {assignees.map((assignee) => (
                 <option key={assignee.id} value={assignee.id}>
                   {assignee.name}
@@ -207,9 +240,23 @@ function TaskForm({ projects = [], assignees = [], onCreated }) {
           {renderFieldErrors('AssigneeId')}
 
           <button type="submit">
-            {saving ? 'Guardando…' : 'Guardar tarea'}
+            {saving
+              ? 'Guardando…'
+              : isEditing
+                ? 'Guardar cambios'
+                : 'Guardar tarea'}
           </button>
         </fieldset>
+
+        {isEditing && (
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={saving}
+          >
+            Cancelar edición
+          </button>
+        )}
 
         {error && <p role="alert">{error}</p>}
         {success && <p role="status">{success}</p>}

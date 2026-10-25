@@ -271,6 +271,14 @@
 - Verificado: abrir el detalle, cambiar entre tareas y cerrarlo.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Edición de tareas desde React
+- Agregada updateTask en services/api.js para enviar cambios mediante PUT.
+- Reutilizado TaskForm para crear y editar tareas.
+- Agregados Editar y Cancelar edición.
+- El listado se actualiza después de guardar y conserva los filtros aplicados.
+- Comprobada la edición desde React.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

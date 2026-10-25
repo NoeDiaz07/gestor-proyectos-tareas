@@ -15,7 +15,7 @@ const emptyFilters = {
   status: '',
 }
 
-function TaskResults({ filters, onViewDetail }) {
+function TaskResults({ filters, onViewDetail, onEdit }) {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -117,6 +117,13 @@ function TaskResults({ filters, onViewDetail }) {
                 >
                   Ver detalle
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => onEdit(task)}
+                >
+                  Editar
+                </button>
               </td>
             </tr>
           ))}
@@ -133,6 +140,8 @@ function TaskList({ projects = [], assignees = [] }) {
   })
   const [requestId, setRequestId] = useState(0)
   const [selectedTaskId, setSelectedTaskId] = useState(null)
+  const [editingTask, setEditingTask] = useState(null)
+  const [success, setSuccess] = useState('')
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -159,15 +168,40 @@ function TaskList({ projects = [], assignees = [] }) {
   }
 
   function handleTaskCreated() {
+    setSuccess('')
     setSelectedTaskId(null)
     setFilters({ ...emptyFilters })
     setAppliedFilters({ ...emptyFilters })
     setRequestId((current) => current + 1)
   }
 
+  function handleTaskUpdated() {
+    setEditingTask(null)
+    setSelectedTaskId(null)
+    setSuccess('Tarea actualizada correctamente.')
+    setRequestId((current) => current + 1)
+  }
+
+  function handleTaskEdit(task) {
+    setEditingTask(task)
+    setSelectedTaskId(null)
+    setSuccess('')
+  }
+
+  function handleTaskCancelEdit() {
+    setEditingTask(null)
+    setSuccess('')
+  }
+
+  function handleViewDetail(taskId) {
+    setSelectedTaskId(taskId)
+  }
+
   return (
     <section aria-labelledby="tasks-title">
       <h2 id="tasks-title">Tareas</h2>
+
+      {success && <p role="status">{success}</p>}
 
       {selectedTaskId !== null && (
         <TaskDetail
@@ -178,9 +212,13 @@ function TaskList({ projects = [], assignees = [] }) {
       )}
 
       <TaskForm
+        key={editingTask?.id ?? 'create-task'}
+        task={editingTask}
         projects={projects}
         assignees={assignees}
         onCreated={handleTaskCreated}
+        onUpdated={handleTaskUpdated}
+        onCancel={handleTaskCancelEdit}
       />
 
       <form onSubmit={handleSubmit}>
@@ -257,7 +295,8 @@ function TaskList({ projects = [], assignees = [] }) {
       <TaskResults
         key={requestId}
         filters={appliedFilters}
-        onViewDetail={setSelectedTaskId}
+        onViewDetail={handleViewDetail}
+        onEdit={handleTaskEdit}
       />
     </section>
   )

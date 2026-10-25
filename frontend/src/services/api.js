@@ -284,3 +284,28 @@ export async function getTaskById(id, signal) {
 
   return response.json()
 }
+export async function updateTask(id, task) {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify(task),
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    const error = new Error(
+      response.status === 404
+        ? 'La tarea ya no existe. Actualiza el listado.'
+        : problem.detail || 'No se pudo actualizar la tarea.'
+    )
+
+    error.validationErrors = problem.errors || {}
+    throw error
+  }
+
+  return response.json()
+}

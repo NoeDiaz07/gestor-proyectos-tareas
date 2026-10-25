@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import TaskDetail from './TaskDetail'
 import TaskForm from './TaskForm'
-import { getTasks } from '../services/api'
+import { deleteTask, getTasks } from '../services/api'
 
 const statusLabels = {
   Pending: 'Pendiente',
@@ -15,13 +15,20 @@ const emptyFilters = {
   status: '',
 }
 
-function TaskResults({ filters, onViewDetail, onEdit }) {
+function TaskResults({
+  filters,
+  onViewDetail,
+  onEdit,
+  onDelete,
+  deletingId,
+}) {
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   const { projectId, assigneeId, status } = filters
   const hasFilters = Boolean(projectId || assigneeId || status)
+  const deleting = deletingId !== null
 
   useEffect(() => {
     const controller = new AbortController()
@@ -113,6 +120,7 @@ function TaskResults({ filters, onViewDetail, onEdit }) {
               <td>
                 <button
                   type="button"
+                  disabled={deleting}
                   onClick={() => onViewDetail(task.id)}
                 >
                   Ver detalle
@@ -120,9 +128,20 @@ function TaskResults({ filters, onViewDetail, onEdit }) {
 
                 <button
                   type="button"
+                  disabled={deleting}
                   onClick={() => onEdit(task)}
                 >
                   Editar
+                </button>
+
+                <button
+                  type="button"
+                  disabled={deleting}
+                  onClick={() => onDelete(task)}
+                >
+                  {deletingId === task.id
+                    ? 'Eliminando…'
+                    : 'Eliminar'}
                 </button>
               </td>
             </tr>
@@ -142,6 +161,10 @@ function TaskList({ projects = [], assignees = [] }) {
   const [selectedTaskId, setSelectedTaskId] = useState(null)
   const [editingTask, setEditingTask] = useState(null)
   const [success, setSuccess] = useState('')
+  const [actionError, setActionError] = useState('')
+  const [deletingId, setDeletingId] = useState(null)
+
+  const deleting = deletingId !== null
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -169,6 +192,7 @@ function TaskList({ projects = [], assignees = [] }) {
 
   function handleTaskCreated() {
     setSuccess('')
+    setActionError('')
     setSelectedTaskId(null)
     setFilters({ ...emptyFilters })
     setAppliedFilters({ ...emptyFilters })
@@ -178,6 +202,7 @@ function TaskList({ projects = [], assignees = [] }) {
   function handleTaskUpdated() {
     setEditingTask(null)
     setSelectedTaskId(null)
+    setActionError('')
     setSuccess('Tarea actualizada correctamente.')
     setRequestId((current) => current + 1)
   }
@@ -186,15 +211,54 @@ function TaskList({ projects = [], assignees = [] }) {
     setEditingTask(task)
     setSelectedTaskId(null)
     setSuccess('')
+    setActionError('')
   }
 
   function handleTaskCancelEdit() {
     setEditingTask(null)
     setSuccess('')
+    setActionError('')
   }
 
   function handleViewDetail(taskId) {
     setSelectedTaskId(taskId)
+  }
+
+  async function handleTaskDelete(task) {
+    if (deletingId !== null) {
+      return
+    }
+
+    const confirmed = window.confirm(
+      `¿Eliminar la tarea "${task.title}" (ID ${task.id})? Esta acción no se puede deshacer.`
+    )
+
+    if (!confirmed) {
+      return
+    }
+
+    setDeletingId(task.id)
+    setActionError('')
+    setSuccess('')
+
+    try {
+      await deleteTask(task.id)
+
+      setSelectedTaskId((current) =>
+        current === task.id ? null : current
+      )
+
+      setEditingTask((current) =>
+        current?.id === task.id ? null : current
+      )
+
+      setSuccess('Tarea eliminada correctamente.')
+      setRequestId((current) => current + 1)
+    } catch (err) {
+      setActionError(`No se pudo eliminar. ${err.message}`)
+    } finally {
+      setDeletingId(null)
+    }
   }
 
   return (
@@ -202,6 +266,7 @@ function TaskList({ projects = [], assignees = [] }) {
       <h2 id="tasks-title">Tareas</h2>
 
       {success && <p role="status">{success}</p>}
+      {actionError && <p role="alert">{actionError}</p>}
 
       {selectedTaskId !== null && (
         <TaskDetail
@@ -211,18 +276,22 @@ function TaskList({ projects = [], assignees = [] }) {
         />
       )}
 
-      <TaskForm
-        key={editingTask?.id ?? 'create-task'}
-        task={editingTask}
-        projects={projects}
-        assignees={assignees}
-        onCreated={handleTaskCreated}
-        onUpdated={handleTaskUpdated}
-        onCancel={handleTaskCancelEdit}
-      />
+      <fieldset disabled={deleting}>
+        <legend>Formulario de tarea</legend>
+
+        <TaskForm
+          key={editingTask?.id ?? 'create-task'}
+          task={editingTask}
+          projects={projects}
+          assignees={assignees}
+          onCreated={handleTaskCreated}
+          onUpdated={handleTaskUpdated}
+          onCancel={handleTaskCancelEdit}
+        />
+      </fieldset>
 
       <form onSubmit={handleSubmit}>
-        <fieldset>
+        <fieldset disabled={deleting}>
           <legend>Filtrar tareas</legend>
 
           <p>
@@ -297,6 +366,8 @@ function TaskList({ projects = [], assignees = [] }) {
         filters={appliedFilters}
         onViewDetail={handleViewDetail}
         onEdit={handleTaskEdit}
+        onDelete={handleTaskDelete}
+        deletingId={deletingId}
       />
     </section>
   )

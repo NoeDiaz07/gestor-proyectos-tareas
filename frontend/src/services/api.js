@@ -309,3 +309,21 @@ export async function updateTask(id, task) {
 
   return response.json()
 }
+export async function deleteTask(id) {
+  const response = await fetch(`${API_URL}/tasks/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    const problem = await response.json().catch(() => ({}))
+
+    throw new Error(
+      response.status === 404
+        ? 'La tarea ya no existe. Actualiza el listado.'
+        : problem.detail || 'No se pudo eliminar la tarea.'
+    )
+  }
+}

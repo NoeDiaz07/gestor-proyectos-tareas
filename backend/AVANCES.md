@@ -279,6 +279,18 @@
 - Comprobada la edición desde React.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Eliminación de tareas desde React
+- Agregada deleteTask en services/api.js.
+- Incorporado el botón Eliminar con confirmación.
+- Durante la eliminación se deshabilitan el formulario de tareas,
+  los filtros y las acciones de la tabla.
+- El listado se actualiza conservando los filtros aplicados.
+- Se cierra el detalle o la edición si corresponde a la tarea eliminada.
+- Verificado con una tarea temporal: cancelar conserva el registro;
+  confirmar lo elimina y sigue ausente después de recargar.
+- Las tres tareas anteriores permanecen.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

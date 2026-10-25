@@ -300,6 +300,17 @@
   enviar InProgress al crear devuelve 400.
 - Compilación del backend y frontend correctas.
 - Oxlint: 0 advertencias y 0 errores.
+### Respuesta 409 por correo duplicado
+- Ajustado AssigneesController para devolver 409 al crear o
+  editar con un correo que pertenece a otro responsable.
+- Conservado errors.Email para mostrar el mensaje junto al campo.
+- Mantenida la protección del índice único de SQL Server.
+- Verificado en Swagger: creación con correo duplicado en
+  mayúsculas devuelve 409; edición con correo ajeno devuelve
+  409; conservar el correo propio devuelve 200.
+- Verificado en React: mensaje junto al correo al crear y editar,
+  conservación de campos y botón habilitado tras el rechazo.
+- Compilación del backend correcta.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

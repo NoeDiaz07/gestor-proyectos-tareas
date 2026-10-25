@@ -71,6 +71,9 @@ public class AssigneesController : ControllerBase
     [ProducesResponseType(
         typeof(ValidationProblemDetails),
         StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status409Conflict)]
     public async Task<ActionResult<AssigneeResponseDto>> Create(
         CreateAssigneeDto dto)
     {
@@ -91,11 +94,7 @@ public class AssigneesController : ControllerBase
 
         if (emailExists)
         {
-            ModelState.AddModelError(
-                nameof(dto.Email),
-                "Ya existe un responsable con este correo.");
-
-            return ValidationProblem(ModelState);
+            return DuplicateEmailConflict();
         }
 
         var assignee = new Assignee
@@ -115,11 +114,7 @@ public class AssigneesController : ControllerBase
                 && (sqlException.Number == 2601
                     || sqlException.Number == 2627))
         {
-            ModelState.AddModelError(
-                nameof(dto.Email),
-                "Ya existe un responsable con este correo.");
-
-            return ValidationProblem(ModelState);
+            return DuplicateEmailConflict();
         }
 
         var response = new AssigneeResponseDto
@@ -143,6 +138,9 @@ public class AssigneesController : ControllerBase
         typeof(ValidationProblemDetails),
         StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(
+        typeof(ValidationProblemDetails),
+        StatusCodes.Status409Conflict)]
     public async Task<ActionResult<AssigneeResponseDto>> Update(
         int id,
         UpdateAssigneeDto dto)
@@ -172,11 +170,7 @@ public class AssigneesController : ControllerBase
 
         if (emailExists)
         {
-            ModelState.AddModelError(
-                nameof(dto.Email),
-                "Ya existe un responsable con este correo.");
-
-            return ValidationProblem(ModelState);
+            return DuplicateEmailConflict();
         }
 
         assignee.Name = name;
@@ -191,11 +185,7 @@ public class AssigneesController : ControllerBase
                 && (sqlException.Number == 2601
                     || sqlException.Number == 2627))
         {
-            ModelState.AddModelError(
-                nameof(dto.Email),
-                "Ya existe un responsable con este correo.");
-
-            return ValidationProblem(ModelState);
+            return DuplicateEmailConflict();
         }
 
         return Ok(new AssigneeResponseDto
@@ -249,5 +239,24 @@ public class AssigneesController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    private ConflictObjectResult DuplicateEmailConflict()
+    {
+        const string message =
+            "Ya existe un responsable con este correo.";
+
+        var problem = new ValidationProblemDetails(
+            new Dictionary<string, string[]>
+            {
+                ["Email"] = new[] { message }
+            })
+        {
+            Status = StatusCodes.Status409Conflict,
+            Title = "Correo electrónico duplicado.",
+            Detail = message
+        };
+
+        return Conflict(problem);
     }
 }

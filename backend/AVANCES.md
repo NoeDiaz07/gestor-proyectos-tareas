@@ -323,6 +323,17 @@
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
 
+### Tareas en el detalle de responsables
+- Incorporada la consulta de tareas filtradas por assigneeId
+  dentro de AssigneeDetail.
+- Se muestran título, descripción, estado, vencimiento y proyecto.
+- Incluidos estados de carga, error y lista vacía.
+- Verificado: Luis muestra dos tareas y Ana una.
+- María muestra el mensaje de que no tiene tareas asignadas.
+- Comprobados el cambio entre responsables y el cierre del detalle.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
+
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:
   - Límites de descripción y demás casos pendientes de P04.

@@ -311,6 +311,17 @@
 - Verificado en React: mensaje junto al correo al crear y editar,
   conservación de campos y botón habilitado tras el rechazo.
 - Compilación del backend correcta.
+### Tareas en el detalle de proyectos
+- Incorporada la consulta de tareas filtradas por projectId
+  dentro de ProjectDetail.
+- Se muestran título, descripción, estado, vencimiento
+  y responsable.
+- Incluidos estados de carga, error y lista vacía.
+- Comprobado: el proyecto 6 muestra sus tres tareas asociadas.
+- Pendiente de confirmar: mensaje del proyecto sin tareas
+  y cambio entre detalles de distintos proyectos.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

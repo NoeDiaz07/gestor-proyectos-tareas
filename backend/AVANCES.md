@@ -291,6 +291,15 @@
 - Las tres tareas anteriores permanecen.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Estado inicial de las tareas
+- Ajustado CreateTaskDto para usar Pending cuando se omite status.
+- Al crear, la API acepta únicamente Pending.
+- React ofrece solo Pendiente durante la creación y mantiene
+  los tres estados disponibles durante la edición.
+- Comprobado en Swagger: omitir status devuelve 201 con Pending;
+  enviar InProgress al crear devuelve 400.
+- Compilación del backend y frontend correctas.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

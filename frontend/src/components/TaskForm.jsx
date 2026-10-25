@@ -166,17 +166,22 @@ function TaskForm({
 
           <p>
             <label htmlFor="task-status">Estado</label>
-            <select
-              id="task-status"
-              name="status"
-              value={form.status}
-              onChange={handleChange}
-              required
-            >
-              <option value="Pending">Pendiente</option>
-              <option value="InProgress">En progreso</option>
-              <option value="Completed">Completada</option>
-            </select>
+           <select
+  id="task-status"
+  name="status"
+  value={form.status}
+  onChange={handleChange}
+  required
+>
+  <option value="Pending">Pendiente</option>
+
+  {isEditing && (
+    <>
+      <option value="InProgress">En progreso</option>
+      <option value="Completed">Completada</option>
+    </>
+  )}
+</select>
           </p>
 
           {renderFieldErrors('Status')}

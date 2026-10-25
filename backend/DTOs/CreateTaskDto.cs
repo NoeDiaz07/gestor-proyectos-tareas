@@ -13,9 +13,9 @@ public class CreateTaskDto
 
     [Required]
     [RegularExpression(
-        "^(Pending|InProgress|Completed)$",
-        ErrorMessage = "El estado debe ser Pending, InProgress o Completed.")]
-    public string Status { get; set; } = string.Empty;
+        "^Pending$",
+        ErrorMessage = "Una tarea nueva debe comenzar en estado Pending.")]
+    public string Status { get; set; } = "Pending";
 
     [Required]
     public DateOnly? DueDate { get; set; }

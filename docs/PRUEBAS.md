@@ -20,7 +20,13 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P02 — Responsables | CRUD desde API y React comprobado en avances anteriores. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
 | P03 — Tareas | CRUD desde API y React; edición de estado, responsable, descripción y vencimiento comprobada durante el desarrollo. | Probar el cambio de proyecto y completar evidencias. |
 | P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud en los recursos; verificar mensajes en React. |
-| P05 — Correo | Duplicado con mayúsculas: 409. Edición con correo ajeno: 409. Correo propio: 200. Mensajes en React comprobados. | Probar normalización con espacios y adjuntar evidencias. |
+| P05 — Correo | Completado: duplicado con espacios y mayúsculas devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Permanecen los tres responsables. | Ninguno. |
+- Estado de P05: completado.
+- Edición con el correo de Luis en Ana: 409.
+- Edición de Ana conservando su correo propio: 200.
+- Listado verificado: permanecen Ana, Luis y María,
+  sin registros adicionales.
+
 | P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
 | P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias, incluida la igualdad entre ambas fechas. |
 | P08 — Borrado | Bloqueo 409 por tareas comprobado en la API para proyecto y responsable. | Confirmar bloqueo desde React y probar 204 después de reasignar o eliminar tareas temporales. |
@@ -43,6 +49,7 @@ resultado esperado, observado y ubicación de la evidencia.
 - Estado: cambio de estados y persistencia comprobados.
 - Estado inválido: rechazo 400 comprobado y evidencia adjunta.
 - Estado de P09: completado.
+| P09 — Estados | Completado: completar y reabrir la tarea ID 4, comprobar persistencia al recargar y rechazar estado inválido con 400. Evidencias adjuntas en el registro detallado. | Ninguno. |
 
 #### Evidencia de reapertura
 

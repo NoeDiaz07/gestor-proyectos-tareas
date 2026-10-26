@@ -387,3 +387,23 @@
 - Verificados el listado vacío y la respuesta 404 para un ID inexistente.
 - Compilación de la API correcta.
 - Pendiente: consulta de un responsable existente, creación, edición y eliminación.
+### P05 — Normalización y unicidad del correo
+
+- Solicitud: POST /api/assignees.
+- Correo enviado: "  LUIS.GOMEZ@EXAMPLE.COM  ".
+- Resultado esperado: 409 porque el correo pertenece a Luis Gómez.
+- Resultado observado: 409 con el mensaje
+  "Ya existe un responsable con este correo.".
+- Comprobaciones anteriores: editar con correo ajeno devuelve 409;
+  conservar el correo propio devuelve 200.
+- Pendiente: adjuntar evidencias de los dos casos de edición
+  y confirmar que el listado no contiene un registro adicional.
+
+![Correo duplicado con espacios y mayúsculas](evidencias/P05-correo-duplicado-normalizado.png)
+### Prueba de aceptación P05 — Correo
+- Comprobado el rechazo 409 del correo duplicado con espacios
+  y mayúsculas.
+- Edición con correo ajeno: 409. Con correo propio: 200.
+- Confirmado que permanecen los tres responsables,
+  sin crear registros adicionales.
+- Resultados registrados en docs/PRUEBAS.md.

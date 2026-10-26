@@ -341,6 +341,13 @@
   la conservación de campos al navegar.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Prueba de aceptación P09 — Estados
+- Comprobado el cambio de la tarea ID 4 a Completada y su
+  persistencia después de recargar.
+- Comprobada su reapertura a En progreso y persistencia.
+- GET /api/tasks?status=Invalid devuelve 400 con mensaje claro.
+- Resultados y tres capturas registrados en docs/PRUEBAS.md
+  y docs/evidencias.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

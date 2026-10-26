@@ -1,0 +1,61 @@
+# Pruebas de aceptación
+
+## Forma de registro
+
+Cada caso debe incluir:
+- Datos utilizados e identificadores reales.
+- Resultado esperado.
+- Resultado observado.
+- Evidencia: captura o respuesta HTTP.
+- Estado: pendiente, parcial o completado.
+
+Las comprobaciones previas se registran como parciales cuando
+todavía falta cubrir algún escenario o adjuntar evidencia.
+
+## Seguimiento
+
+| Caso | Comprobaciones realizadas | Pendiente |
+|---|---|---|
+| P01 — Proyectos | Creación, listado, detalle, edición y eliminación desde React; persistencia comprobada en avances anteriores. | Reunir evidencias de las cinco operaciones y su verificación en SQL Server. |
+| P02 — Responsables | CRUD desde API y React comprobado en avances anteriores. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
+| P03 — Tareas | CRUD desde API y React; edición de estado, responsable, descripción y vencimiento comprobada durante el desarrollo. | Probar el cambio de proyecto y completar evidencias. |
+| P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud en los recursos; verificar mensajes en React. |
+| P05 — Correo | Duplicado con mayúsculas: 409. Edición con correo ajeno: 409. Correo propio: 200. Mensajes en React comprobados. | Probar normalización con espacios y adjuntar evidencias. |
+| P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
+| P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias, incluida la igualdad entre ambas fechas. |
+| P08 — Borrado | Bloqueo 409 por tareas comprobado en la API para proyecto y responsable. | Confirmar bloqueo desde React y probar 204 después de reasignar o eliminar tareas temporales. |
+| P09 — Estados | Estado inválido rechazado; creación limitada a Pending. | Completar y reabrir una tarea; recargar y comprobar persistencia. |
+| P10 — Filtros | Filtros individuales, combinados, sin coincidencias y limpieza comprobados. | Preparar los datos de demostración y ejecutar el caso exacto solicitado. |
+| P11 — Errores | Varios 404 y errores con API detenida comprobados durante el desarrollo. | Completar consulta, edición y borrado inexistentes por recurso; conservación del formulario ante fallo. |
+| P12 — Persistencia | Datos conservados después de recargar y reiniciar la API. | Verificar montaje en una base nueva con migraciones, sin borrar la base actual. |
+
+## Registro detallado
+
+Se agregará una sección por cada prueba ejecutada, indicando
+resultado esperado, observado y ubicación de la evidencia.
+### P09 — Completar y reabrir una tarea
+
+- Tarea utilizada: ID 4, Tarea editada desde React.
+- Resultado esperado: permitir cambiar de Completada a En progreso
+  y conservar cada estado después de recargar el navegador.
+- Resultado observado: la tarea conservó Completada después de
+  recargar y, al reabrirla, conservó En progreso.
+- Estado: cambio de estados y persistencia comprobados.
+- Estado inválido: rechazo 400 comprobado y evidencia adjunta.
+- Estado de P09: completado.
+
+#### Evidencia de reapertura
+
+![Tarea reabierta en En progreso](evidencias/P09-tarea-reabierta.png)
+#### Evidencia de tarea completada
+
+![Tarea completada después de recargar](evidencias/P09-tarea-completada.png)
+#### Evidencia de estado inválido
+
+- Solicitud: GET /api/tasks?status=Invalid.
+- Resultado esperado: 400 y mensaje de estado no permitido.
+- Resultado observado: 400 con el mensaje
+  "El estado debe ser Pending, InProgress o Completed.".
+- La consulta no modifica datos.
+
+![Estado inválido rechazado con 400](evidencias/P09-estado-invalido.png)

@@ -333,6 +333,14 @@
 - Comprobados el cambio entre responsables y el cierre del detalle.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Menú de navegación
+- Agregado un menú con enlaces a Proyectos, Responsables y Tareas.
+- Incorporados enlaces para volver al menú desde cada sección.
+- La navegación conserva los formularios y los datos escritos.
+- Comprobados los tres destinos, el regreso al menú y
+  la conservación de campos al navegar.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.
 
 ## Pendiente
 - Completar las validaciones y pruebas de proyectos:

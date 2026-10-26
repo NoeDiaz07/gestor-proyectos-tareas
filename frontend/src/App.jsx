@@ -172,6 +172,7 @@ function App() {
     )
 
     setEditingAssignee(null)
+    setSelectedAssigneeId(null)
     setAssigneeActionError('')
     setAssigneeSuccess('Responsable actualizado correctamente.')
   }
@@ -231,208 +232,249 @@ function App() {
   }
 
   return (
-    <main>
-      <h1>Gestor de proyectos y tareas</h1>
+    <>
+      <header id="inicio">
+        <h1>Gestor de proyectos y tareas</h1>
 
-      <section aria-labelledby="projects-title">
-        <h2 id="projects-title">Proyectos</h2>
+        <nav aria-label="Navegación principal">
+          <ul>
+            <li>
+              <a href="#proyectos">Proyectos</a>
+            </li>
+            <li>
+              <a href="#responsables">Responsables</a>
+            </li>
+            <li>
+              <a href="#tareas">Tareas</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
-        {success && <p role="status">{success}</p>}
-        {actionError && <p role="alert">{actionError}</p>}
+      <main>
+        <section
+          id="proyectos"
+          aria-labelledby="projects-title"
+        >
+          <h2 id="projects-title">Proyectos</h2>
 
-        {selectedProjectId !== null && (
-          <ProjectDetail
-            key={selectedProjectId}
-            projectId={selectedProjectId}
-            onClose={() => setSelectedProjectId(null)}
-          />
-        )}
+          {success && <p role="status">{success}</p>}
+          {actionError && <p role="alert">{actionError}</p>}
 
-        {!loading && !error && (
-          <fieldset disabled={deletingId !== null}>
-            <legend>Formulario de proyecto</legend>
-
-            <ProjectForm
-              key={editingProject?.id ?? 'create'}
-              project={editingProject}
-              onCreated={handleCreated}
-              onUpdated={handleUpdated}
-              onCancel={handleCancelEdit}
+          {selectedProjectId !== null && (
+            <ProjectDetail
+              key={selectedProjectId}
+              projectId={selectedProjectId}
+              onClose={() => setSelectedProjectId(null)}
             />
-          </fieldset>
-        )}
+          )}
 
-        {loading && <p role="status">Cargando proyectos…</p>}
-        {error && <p role="alert">{error}</p>}
+          {!loading && !error && (
+            <fieldset disabled={deletingId !== null}>
+              <legend>Formulario de proyecto</legend>
 
-        {!loading && !error && (
-          projects.length === 0 ? (
-            <p>No hay proyectos registrados.</p>
-          ) : (
-            <table>
-              <caption>Proyectos registrados</caption>
+              <ProjectForm
+                key={editingProject?.id ?? 'create'}
+                project={editingProject}
+                onCreated={handleCreated}
+                onUpdated={handleUpdated}
+                onCancel={handleCancelEdit}
+              />
+            </fieldset>
+          )}
 
-              <thead>
-                <tr>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Descripción</th>
-                  <th scope="col">Fecha de inicio</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
+          {loading && (
+            <p role="status">Cargando proyectos…</p>
+          )}
 
-              <tbody>
-                {projects.map((project) => (
-                  <tr key={project.id}>
-                    <td>{project.name}</td>
-                    <td>
-                      {project.description || 'Sin descripción'}
-                    </td>
-                    <td>{project.startDate}</td>
-                    <td>
-                      <button
-                        type="button"
-                        disabled={deletingId !== null}
-                        onClick={() =>
-                          setSelectedProjectId(project.id)
-                        }
-                      >
-                        Ver detalle
-                      </button>
+          {error && <p role="alert">{error}</p>}
 
-                      <button
-                        type="button"
-                        disabled={deletingId !== null}
-                        onClick={() => handleEdit(project)}
-                      >
-                        Editar
-                      </button>
+          {!loading && !error && (
+            projects.length === 0 ? (
+              <p>No hay proyectos registrados.</p>
+            ) : (
+              <table>
+                <caption>Proyectos registrados</caption>
 
-                      <button
-                        type="button"
-                        disabled={deletingId !== null}
-                        onClick={() => handleDelete(project)}
-                      >
-                        {deletingId === project.id
-                          ? 'Eliminando…'
-                          : 'Eliminar'}
-                      </button>
-                    </td>
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Fecha de inicio</th>
+                    <th scope="col">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )
-        )}
-      </section>
+                </thead>
 
-      <section aria-labelledby="assignees-title">
-        <h2 id="assignees-title">Responsables</h2>
+                <tbody>
+                  {projects.map((project) => (
+                    <tr key={project.id}>
+                      <td>{project.name}</td>
+                      <td>
+                        {project.description || 'Sin descripción'}
+                      </td>
+                      <td>{project.startDate}</td>
+                      <td>
+                        <button
+                          type="button"
+                          disabled={deletingId !== null}
+                          onClick={() =>
+                            setSelectedProjectId(project.id)
+                          }
+                        >
+                          Ver detalle
+                        </button>
 
-        {assigneeSuccess && (
-          <p role="status">{assigneeSuccess}</p>
-        )}
+                        <button
+                          type="button"
+                          disabled={deletingId !== null}
+                          onClick={() => handleEdit(project)}
+                        >
+                          Editar
+                        </button>
 
-        {assigneeActionError && (
-          <p role="alert">{assigneeActionError}</p>
-        )}
+                        <button
+                          type="button"
+                          disabled={deletingId !== null}
+                          onClick={() => handleDelete(project)}
+                        >
+                          {deletingId === project.id
+                            ? 'Eliminando…'
+                            : 'Eliminar'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
+          )}
 
-        {selectedAssigneeId !== null && (
-          <AssigneeDetail
-            key={selectedAssigneeId}
-            assigneeId={selectedAssigneeId}
-            onClose={() => setSelectedAssigneeId(null)}
-          />
-        )}
+          <p>
+            <a href="#inicio">Volver al menú</a>
+          </p>
+        </section>
 
-        {!loadingAssignees && !assigneesError && (
-          <fieldset disabled={deletingAssigneeId !== null}>
-            <legend>Formulario de responsable</legend>
+        <section
+          id="responsables"
+          aria-labelledby="assignees-title"
+        >
+          <h2 id="assignees-title">Responsables</h2>
 
-            <AssigneeForm
-              key={editingAssignee?.id ?? 'create-assignee'}
-              assignee={editingAssignee}
-              onCreated={handleAssigneeCreated}
-              onUpdated={handleAssigneeUpdated}
-              onCancel={handleAssigneeCancelEdit}
+          {assigneeSuccess && (
+            <p role="status">{assigneeSuccess}</p>
+          )}
+
+          {assigneeActionError && (
+            <p role="alert">{assigneeActionError}</p>
+          )}
+
+          {selectedAssigneeId !== null && (
+            <AssigneeDetail
+              key={selectedAssigneeId}
+              assigneeId={selectedAssigneeId}
+              onClose={() => setSelectedAssigneeId(null)}
             />
-          </fieldset>
-        )}
+          )}
 
-        {loadingAssignees && (
-          <p role="status">Cargando responsables…</p>
-        )}
+          {!loadingAssignees && !assigneesError && (
+            <fieldset disabled={deletingAssigneeId !== null}>
+              <legend>Formulario de responsable</legend>
 
-        {assigneesError && (
-          <p role="alert">{assigneesError}</p>
-        )}
+              <AssigneeForm
+                key={editingAssignee?.id ?? 'create-assignee'}
+                assignee={editingAssignee}
+                onCreated={handleAssigneeCreated}
+                onUpdated={handleAssigneeUpdated}
+                onCancel={handleAssigneeCancelEdit}
+              />
+            </fieldset>
+          )}
 
-        {!loadingAssignees && !assigneesError && (
-          assignees.length === 0 ? (
-            <p>No hay responsables registrados.</p>
-          ) : (
-            <table>
-              <caption>Responsables registrados</caption>
+          {loadingAssignees && (
+            <p role="status">Cargando responsables…</p>
+          )}
 
-              <thead>
-                <tr>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Correo electrónico</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
+          {assigneesError && (
+            <p role="alert">{assigneesError}</p>
+          )}
 
-              <tbody>
-                {assignees.map((assignee) => (
-                  <tr key={assignee.id}>
-                    <td>{assignee.name}</td>
-                    <td>{assignee.email}</td>
-                    <td>
-                      <button
-                        type="button"
-                        disabled={deletingAssigneeId !== null}
-                        onClick={() =>
-                          setSelectedAssigneeId(assignee.id)
-                        }
-                      >
-                        Ver detalle
-                      </button>
+          {!loadingAssignees && !assigneesError && (
+            assignees.length === 0 ? (
+              <p>No hay responsables registrados.</p>
+            ) : (
+              <table>
+                <caption>Responsables registrados</caption>
 
-                      <button
-                        type="button"
-                        disabled={deletingAssigneeId !== null}
-                        onClick={() =>
-                          handleAssigneeEdit(assignee)
-                        }
-                      >
-                        Editar
-                      </button>
-
-                      <button
-                        type="button"
-                        disabled={deletingAssigneeId !== null}
-                        onClick={() =>
-                          handleAssigneeDelete(assignee)
-                        }
-                      >
-                        {deletingAssigneeId === assignee.id
-                          ? 'Eliminando…'
-                          : 'Eliminar'}
-                      </button>
-                    </td>
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo electrónico</th>
+                    <th scope="col">Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          )
-        )}
-      </section>
+                </thead>
 
-     <TaskList
-  projects={projects}
-  assignees={assignees}
-/>
-    </main>
+                <tbody>
+                  {assignees.map((assignee) => (
+                    <tr key={assignee.id}>
+                      <td>{assignee.name}</td>
+                      <td>{assignee.email}</td>
+                      <td>
+                        <button
+                          type="button"
+                          disabled={deletingAssigneeId !== null}
+                          onClick={() =>
+                            setSelectedAssigneeId(assignee.id)
+                          }
+                        >
+                          Ver detalle
+                        </button>
+
+                        <button
+                          type="button"
+                          disabled={deletingAssigneeId !== null}
+                          onClick={() =>
+                            handleAssigneeEdit(assignee)
+                          }
+                        >
+                          Editar
+                        </button>
+
+                        <button
+                          type="button"
+                          disabled={deletingAssigneeId !== null}
+                          onClick={() =>
+                            handleAssigneeDelete(assignee)
+                          }
+                        >
+                          {deletingAssigneeId === assignee.id
+                            ? 'Eliminando…'
+                            : 'Eliminar'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )
+          )}
+
+          <p>
+            <a href="#inicio">Volver al menú</a>
+          </p>
+        </section>
+
+        <div id="tareas">
+          <TaskList
+            projects={projects}
+            assignees={assignees}
+          />
+
+          <p>
+            <a href="#inicio">Volver al menú</a>
+          </p>
+        </div>
+      </main>
+    </>
   )
 }
 

@@ -66,3 +66,21 @@ resultado esperado, observado y ubicación de la evidencia.
 - La consulta no modifica datos.
 
 ![Estado inválido rechazado con 400](evidencias/P09-estado-invalido.png)
+### P08 — Borrado y reasignación
+
+- Proyecto temporal: ID 8.
+- Responsable: Responsable temporal P08.
+- Tarea temporal: ID 7.
+- Resultado esperado: bloquear el borrado mientras existan tareas
+  asociadas y permitirlo después de reasignarlas.
+- Resultado observado:
+  - React mostró el bloqueo al intentar eliminar el proyecto
+    y el responsable con la tarea asociada.
+  - La tarea ID 7 se reasignó a Prueba de cancelación y Luis Gómez.
+  - Después se eliminaron el proyecto y el responsable temporales.
+  - La tarea permaneció con sus nuevas relaciones.
+  - Finalmente se eliminó la tarea temporal ID 7.
+  - Al recargar, permanecieron las tres tareas originales.
+- Estado: recorrido de borrado y reasignación comprobado.
+- Códigos HTTP: el bloqueo 409 se verificó anteriormente en la API;
+  no se capturó el código HTTP de las eliminaciones de esta sesión.

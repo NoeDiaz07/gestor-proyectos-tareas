@@ -406,4 +406,11 @@
 - Edición con correo ajeno: 409. Con correo propio: 200.
 - Confirmado que permanecen los tres responsables,
   sin crear registros adicionales.
+
+### P08 — Borrado después de reasignar tareas
+- Comprobado en React el bloqueo de proyecto y responsable con tareas.
+- Reasignada la tarea temporal ID 7 a otro proyecto y responsable.
+- Eliminados los registros temporales después de la reasignación.
+- Eliminada la tarea temporal y confirmadas las tres tareas originales.
 - Resultados registrados en docs/PRUEBAS.md.
+- Pendiente: evidencia HTTP 204 y bloqueo con tareas completadas.

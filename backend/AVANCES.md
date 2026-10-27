@@ -414,3 +414,12 @@
 - Eliminada la tarea temporal y confirmadas las tres tareas originales.
 - Resultados registrados en docs/PRUEBAS.md.
 - Pendiente: evidencia HTTP 204 y bloqueo con tareas completadas.
+### Cierre de P08 — Protección del borrado
+- Verificado el bloqueo 409 de proyecto y responsable cuya
+  única tarea estaba completada.
+- Eliminada la tarea temporal con 204.
+- Verificados los borrados 204 del proyecto y responsable
+  después de quitar la dependencia.
+- Confirmada la limpieza tras recargar, conservando
+  las tres tareas originales.
+- P08 completada; resultados y evidencias en docs.

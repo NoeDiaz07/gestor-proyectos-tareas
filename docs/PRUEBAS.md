@@ -84,3 +84,23 @@ resultado esperado, observado y ubicación de la evidencia.
 - Estado: recorrido de borrado y reasignación comprobado.
 - Códigos HTTP: el bloqueo 409 se verificó anteriormente en la API;
   no se capturó el código HTTP de las eliminaciones de esta sesión.
+  #### P08 — Bloqueo con una única tarea completada
+
+- Registros utilizados: tarea ID 8, proyecto ID 9 y responsable ID 8.
+- La tarea estaba Completada y era la única asociada a ambos.
+- DELETE del proyecto 9: 409.
+- DELETE del responsable 8: 409.
+- Después de eliminar la tarea 8 con respuesta 204:
+  - DELETE del proyecto 9: 204.
+  - DELETE del responsable 8: 204.
+- Al recargar React, los registros temporales desaparecieron
+  y permanecieron las tres tareas originales.
+- Estado de P08: completado.
+
+![Proyecto bloqueado con 409](evidencias/P08-proyecto-completada-409.png)
+
+![Responsable bloqueado con 409](evidencias/P08-responsable-completada-409.png)
+
+![Proyecto eliminado con 204](evidencias/P08-proyecto-sin-tareas-204.png)
+
+![Responsable eliminado con 204](evidencias/P08-responsable-sin-tareas-204.png)

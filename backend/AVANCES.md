@@ -423,3 +423,15 @@
 - Confirmada la limpieza tras recargar, conservando
   las tres tareas originales.
 - P08 completada; resultados y evidencias en docs.
+### Diseño de la interfaz
+- Reemplazados los estilos iniciales de Vite.
+- Aplicado un diseño uniforme al menú, formularios, detalles,
+  tablas, botones y mensajes.
+- Agregadas reglas para colocar campos en una columna
+  y permitir desplazamiento horizontal en tablas.
+- Verificados visualmente el diseño de escritorio, el menú
+  vertical y los campos apilados en una ventana estrecha.
+- Pendiente: confirmar el desplazamiento horizontal de la
+  tabla de tareas hasta la columna Acciones.
+- Compilación del frontend correcta.
+- Oxlint: 0 advertencias y 0 errores.

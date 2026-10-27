@@ -435,3 +435,11 @@
   tabla de tareas hasta la columna Acciones.
 - Compilación del frontend correcta.
 - Oxlint: 0 advertencias y 0 errores.
+### Documentación principal del proyecto
+- Creado README.md en la carpeta principal.
+- Documentadas funcionalidades, herramientas y organización.
+- Incluidos pasos de configuración de SQL Server, migraciones,
+  ejecución de la API y React, y comandos de verificación.
+- Registradas reglas de negocio, respuestas HTTP y pendientes.
+- Revisada la presentación del documento en la vista previa.
+- Pendiente: verificar la instalación desde cero siguiendo el README.

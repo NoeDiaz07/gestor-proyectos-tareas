@@ -443,3 +443,9 @@
 - Registradas reglas de negocio, respuestas HTTP y pendientes.
 - Revisada la presentación del documento en la vista previa.
 - Pendiente: verificar la instalación desde cero siguiendo el README.
+### Documentación del modelo de datos
+- Creado docs/MODELO_DATOS.md con diagrama de relaciones.
+- Documentados los campos, tipos y restricciones de las tres tablas.
+- Explicadas claves primarias, foráneas, correo único,
+  estados, reglas de fechas y borrado sin cascada.
+- Comprobada la visualización del diagrama en VS Code.

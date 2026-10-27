@@ -252,7 +252,7 @@ Pendientes de cierre:
 
 - Completar la cobertura y evidencias de P01 a P12.
 - Preparar los datos exactos de demostración del documento del reto.
-- Documentar el modelo de entidades y relaciones.
+- `docs/MODELO_DATOS.md`: campos, restricciones y diagrama de relaciones.
 - Verificar la instalación siguiendo este README en una base nueva,
   sin borrar la base utilizada durante el desarrollo.
 - Preparar la demostración final.

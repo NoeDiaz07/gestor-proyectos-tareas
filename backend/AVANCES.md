@@ -471,3 +471,9 @@ Se completó el caso P01 con el proyecto temporal ID 10.
 Se verificaron las operaciones desde React y los resultados en
 SQL Server. El registro temporal se eliminó al finalizar.
 Las evidencias están enlazadas en docs/PRUEBAS.md.
+## P02 — CRUD de responsables verificado
+
+Se completó P02 con el responsable temporal ID 9, sin tareas asignadas.
+Se comprobaron las operaciones desde React y sus resultados en SQL Server.
+El registro temporal se eliminó al finalizar. Las evidencias están
+enlazadas en docs/PRUEBAS.md.

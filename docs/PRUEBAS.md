@@ -26,8 +26,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
 | P10 — Filtros | Filtros individuales, combinados, sin coincidencias y limpieza comprobados. | Preparar los datos de demostración y ejecutar el caso exacto solicitado. |
 | P11 — Errores | Varios 404 y errores con API detenida comprobados durante el desarrollo. | Completar consulta, edición y borrado inexistentes por recurso; conservación del formulario ante fallo. |
-| P12 — Persistencia | Completado: copia separada, base nueva, migraciones aplicadas y registros creados desde React; datos conservados tras recargar y reiniciar la API. Compilaciones y lint correctos. | Ninguno. |
-
+| P02 — Responsables | Completado: creación, listado, detalle, edición y eliminación desde React con un responsable temporal sin tareas; resultados verificados en SQL Server. | Ninguno. |
 ## Registro detallado
 
 Se agregará una sección por cada prueba ejecutada, indicando
@@ -135,3 +134,24 @@ Se utilizó el proyecto temporal con ID 10, sin tareas asociadas.
 - [Edición en SQL Server](evidencias/P01-proyecto-editado-sql.png)
 - [Eliminación en React](evidencias/P01-proyecto-eliminado.png)
 - [Ausencia en SQL Server](evidencias/P01-proyecto-eliminado-sql.png)
+## P02 — CRUD de responsables
+
+Estado: completado.
+
+Se utilizó el responsable temporal con ID 9, sin tareas asignadas.
+
+- Se creó desde React y apareció en el listado y detalle.
+- Sus datos coincidieron con la consulta en SQL Server.
+- Se actualizaron el nombre y el correo electrónico.
+- Los cambios permanecieron después de recargar y coincidieron con SQL Server.
+- Se eliminó desde React y dejó de aparecer después de recargar.
+- La consulta SQL por ID 9 devolvió cero filas tras la eliminación.
+
+### Evidencias
+
+- [Creación y detalle](evidencias/P02-responsable-creado.png)
+- [Creación en SQL Server](evidencias/P02-responsable-creado-sql.png)
+- [Responsable editado](evidencias/P02-responsable-editado.png)
+- [Edición en SQL Server](evidencias/P02-responsable-editado-sql.png)
+- [Eliminación en React](evidencias/P02-responsable-eliminado.png)
+- [Ausencia en SQL Server](evidencias/P02-responsable-eliminado-sql.png)

@@ -477,3 +477,9 @@ Se completó P02 con el responsable temporal ID 9, sin tareas asignadas.
 Se comprobaron las operaciones desde React y sus resultados en SQL Server.
 El registro temporal se eliminó al finalizar. Las evidencias están
 enlazadas en docs/PRUEBAS.md.
+## P03 — Cambio de proyecto verificado
+
+Se comprobó el cambio de proyecto de la tarea temporal ID 9 desde React.
+La relación actualizada persistió al recargar y coincidió con SQL Server.
+Se eliminaron los registros temporales al finalizar y se documentaron
+las evidencias en docs/PRUEBAS.md.

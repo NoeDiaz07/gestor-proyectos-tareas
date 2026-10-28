@@ -17,7 +17,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 |---|---|---|
 || P01 — Proyectos | Completado: creación, listado, detalle, edición y eliminación desde React; creación y actualización verificadas en SQL Server y ausencia del registro comprobada después de eliminar. | Ninguno. |
 | P02 — Responsables | CRUD desde API y React comprobado durante el desarrollo. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
-| P03 — Tareas | CRUD desde API y React; edición de estado, responsable, descripción y vencimiento comprobada. | Completar evidencias del cambio de proyecto. |
+| P03 — Tareas | Completado: CRUD desde API y React; edición de campos y cambio de proyecto comprobados. Relación y persistencia verificadas en SQL Server. | Ninguno. |
 | P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud; verificar mensajes en React. |
 | P05 — Correo | Completado: duplicado normalizado devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Listado comprobado. | Ninguno. |
 | P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
@@ -155,3 +155,26 @@ Se utilizó el responsable temporal con ID 9, sin tareas asignadas.
 - [Edición en SQL Server](evidencias/P02-responsable-editado-sql.png)
 - [Eliminación en React](evidencias/P02-responsable-eliminado.png)
 - [Ausencia en SQL Server](evidencias/P02-responsable-eliminado-sql.png)
+## P03 — Cambio de proyecto de una tarea
+
+Estado: completado, junto con las comprobaciones previas del CRUD de tareas.
+
+Se utilizó la tarea temporal ID 9, asignada a Luis Gómez,
+con vencimiento 2026-10-30.
+
+- Se creó en Proyecto origen P03.
+- Se verificó su relación inicial en SQL Server.
+- Desde React se cambió a Proyecto destino P03.
+- Después de recargar, conservó el mismo ID y mostró el proyecto destino.
+- SQL Server confirmó el cambio de ProjectId.
+- El responsable y el vencimiento se mantuvieron.
+- Al finalizar se eliminaron la tarea y ambos proyectos temporales.
+- Las consultas de limpieza devolvieron cero filas.
+
+### Evidencias
+
+- [Proyecto de origen en React](evidencias/P03-tarea-proyecto-origen.png)
+- [Relación inicial en SQL Server](evidencias/P03-tarea-proyecto-origen-sql.png)
+- [Proyecto destino en React](evidencias/P03-tarea-proyecto-destino.png)
+- [Relación actualizada en SQL Server](evidencias/P03-tarea-proyecto-destino-sql.png)
+- [Limpieza de registros temporales](evidencias/P03-limpieza-sql.png)

@@ -104,3 +104,20 @@ resultado esperado, observado y ubicación de la evidencia.
 ![Proyecto eliminado con 204](evidencias/P08-proyecto-sin-tareas-204.png)
 
 ![Responsable eliminado con 204](evidencias/P08-responsable-sin-tareas-204.png)
+### Verificación de instalación y persistencia
+
+Resultado: completada.
+
+- Se descargó una copia del repositorio en una carpeta separada.
+- Se restauraron las dependencias del backend y del frontend.
+- Se creó la base GestorProyectosDb_Verificacion en SQL Server.
+- Se aplicaron correctamente las tres migraciones del proyecto.
+- Se comprobó que los listados estaban inicialmente vacíos.
+- Se crearon un proyecto, un responsable y una tarea desde React.
+- Los registros se conservaron después de recargar el navegador
+  y después de detener e iniciar nuevamente la API.
+- La compilación del backend y del frontend terminó correctamente.
+- El análisis con Oxlint terminó sin advertencias ni errores.
+
+La comprobación se realizó en el mismo equipo, utilizando una copia
+separada y una base nueva. La base original no se modificó.

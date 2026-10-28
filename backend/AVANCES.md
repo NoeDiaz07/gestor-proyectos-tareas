@@ -458,3 +458,10 @@
 - Restauración y compilación correctas en la copia de verificación
   y en el proyecto original, sin los avisos anteriores.
 - La verificación con una base nueva continúa pendiente.
+## Instalación en una base nueva verificada
+
+Se verificó la instalación desde una copia descargada del repositorio,
+utilizando GestorProyectosDb_Verificacion. Las migraciones se aplicaron
+correctamente y los registros creados desde React persistieron tras
+reiniciar la API. Las comprobaciones de compilación y lint finalizaron
+correctamente.

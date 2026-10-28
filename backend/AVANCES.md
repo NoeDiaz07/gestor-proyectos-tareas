@@ -465,3 +465,9 @@ utilizando GestorProyectosDb_Verificacion. Las migraciones se aplicaron
 correctamente y los registros creados desde React persistieron tras
 reiniciar la API. Las comprobaciones de compilación y lint finalizaron
 correctamente.
+## P01 — CRUD de proyectos verificado
+
+Se completó el caso P01 con el proyecto temporal ID 10.
+Se verificaron las operaciones desde React y los resultados en
+SQL Server. El registro temporal se eliminó al finalizar.
+Las evidencias están enlazadas en docs/PRUEBAS.md.

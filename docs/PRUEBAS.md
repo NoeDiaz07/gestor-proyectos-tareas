@@ -13,27 +13,20 @@ Las comprobaciones previas se registran como parciales cuando
 todavía falta cubrir algún escenario o adjuntar evidencia.
 
 ## Seguimiento
-
 | Caso | Comprobaciones realizadas | Pendiente |
 |---|---|---|
-| P01 — Proyectos | Creación, listado, detalle, edición y eliminación desde React; persistencia comprobada en avances anteriores. | Reunir evidencias de las cinco operaciones y su verificación en SQL Server. |
-| P02 — Responsables | CRUD desde API y React comprobado en avances anteriores. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
-| P03 — Tareas | CRUD desde API y React; edición de estado, responsable, descripción y vencimiento comprobada durante el desarrollo. | Probar el cambio de proyecto y completar evidencias. |
-| P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud en los recursos; verificar mensajes en React. |
-| P05 — Correo | Completado: duplicado con espacios y mayúsculas devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Permanecen los tres responsables. | Ninguno. |
-- Estado de P05: completado.
-- Edición con el correo de Luis en Ana: 409.
-- Edición de Ana conservando su correo propio: 200.
-- Listado verificado: permanecen Ana, Luis y María,
-  sin registros adicionales.
-
+|| P01 — Proyectos | Completado: creación, listado, detalle, edición y eliminación desde React; creación y actualización verificadas en SQL Server y ausencia del registro comprobada después de eliminar. | Ninguno. |
+| P02 — Responsables | CRUD desde API y React comprobado durante el desarrollo. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
+| P03 — Tareas | CRUD desde API y React; edición de estado, responsable, descripción y vencimiento comprobada. | Completar evidencias del cambio de proyecto. |
+| P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud; verificar mensajes en React. |
+| P05 — Correo | Completado: duplicado normalizado devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Listado comprobado. | Ninguno. |
 | P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
-| P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias, incluida la igualdad entre ambas fechas. |
-| P08 — Borrado | Bloqueo 409 por tareas comprobado en la API para proyecto y responsable. | Confirmar bloqueo desde React y probar 204 después de reasignar o eliminar tareas temporales. |
-| P09 — Estados | Estado inválido rechazado; creación limitada a Pending. | Completar y reabrir una tarea; recargar y comprobar persistencia. |
+| P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias y comprobar vencimiento igual al inicio del proyecto. |
+| P08 — Borrado | Completado: bloqueo por tareas desde API y React, incluida una única tarea completada; reasignación y eliminación de tareas temporales; borrado posterior de padres sin tareas con 204. | Ninguno. |
+| P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
 | P10 — Filtros | Filtros individuales, combinados, sin coincidencias y limpieza comprobados. | Preparar los datos de demostración y ejecutar el caso exacto solicitado. |
 | P11 — Errores | Varios 404 y errores con API detenida comprobados durante el desarrollo. | Completar consulta, edición y borrado inexistentes por recurso; conservación del formulario ante fallo. |
-| P12 — Persistencia | Datos conservados después de recargar y reiniciar la API. | Verificar montaje en una base nueva con migraciones, sin borrar la base actual. |
+| P12 — Persistencia | Completado: copia separada, base nueva, migraciones aplicadas y registros creados desde React; datos conservados tras recargar y reiniciar la API. Compilaciones y lint correctos. | Ninguno. |
 
 ## Registro detallado
 
@@ -121,3 +114,24 @@ Resultado: completada.
 
 La comprobación se realizó en el mismo equipo, utilizando una copia
 separada y una base nueva. La base original no se modificó.
+## P01 — CRUD de proyectos
+
+Estado: completado.
+
+Se utilizó el proyecto temporal con ID 10, sin tareas asociadas.
+
+- Se creó desde React y se comprobó su aparición en el listado y detalle.
+- Se consultó en GestorProyectosDb y coincidieron sus datos.
+- Se actualizaron nombre, descripción y fecha de inicio.
+- Los cambios se conservaron al recargar y coincidieron con SQL Server.
+- Se eliminó desde React y dejó de aparecer después de recargar.
+- La consulta SQL por ID 10 devolvió cero filas tras la eliminación.
+
+### Evidencias
+
+- [Creación y detalle](evidencias/P01-proyecto-creado.png)
+- [Creación en SQL Server](evidencias/P01-proyecto-creado-sql.png)
+- [Proyecto editado](evidencias/P01-proyecto-editado.png)
+- [Edición en SQL Server](evidencias/P01-proyecto-editado-sql.png)
+- [Eliminación en React](evidencias/P01-proyecto-eliminado.png)
+- [Ausencia en SQL Server](evidencias/P01-proyecto-eliminado-sql.png)

@@ -121,7 +121,7 @@ public class ProjectsController : ControllerBase
         {
             ModelState.AddModelError(
                 nameof(dto.StartDate),
-                "La fecha de inicio no puede ser posterior al vencimiento de una tarea del proyecto.");
+                "La fecha de inicio no puede ser posterior al vencimien to de una tarea del proyecto.");
 
             return ValidationProblem(ModelState);
         }

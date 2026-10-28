@@ -449,3 +449,12 @@
 - Explicadas claves primarias, foráneas, correo único,
   estados, reglas de fechas y borrado sin cascada.
 - Comprobada la visualización del diagrama en VS Code.
+### Corrección de dependencia con avisos de seguridad
+- Durante la instalación desde una copia de GitHub se detectaron
+  NU1902 y NU1903 en System.Security.Cryptography.Pkcs 9.0.11.
+- Identificada la dependencia transitiva desde EF Core SqlServer
+  mediante Microsoft.Data.SqlClient.
+- Agregada referencia explícita a Pkcs 9.0.21.
+- Restauración y compilación correctas en la copia de verificación
+  y en el proyecto original, sin los avisos anteriores.
+- La verificación con una base nueva continúa pendiente.

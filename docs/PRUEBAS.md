@@ -18,7 +18,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 || P01 — Proyectos | Completado: creación, listado, detalle, edición y eliminación desde React; creación y actualización verificadas en SQL Server y ausencia del registro comprobada después de eliminar. | Ninguno. |
 | P02 — Responsables | CRUD desde API y React comprobado durante el desarrollo. | Reunir evidencias y verificar el caso completo con un responsable temporal sin tareas. |
 | P03 — Tareas | Completado: CRUD desde API y React; edición de campos y cambio de proyecto comprobados. Relación y persistencia verificadas en SQL Server. | Ninguno. |
-| P04 — Obligatorios | Rechazos por nombre inválido y algunas longitudes comprobados durante el desarrollo. | Completar vacíos, espacios y límites de longitud; verificar mensajes en React. |
+| P04 — Obligatorios y longitudes | Completado: campos obligatorios y espacios rechazados; límites de nombres, título, descripciones y correo comprobados en API y React. Registros temporales eliminados. | Ninguno. |
 | P05 — Correo | Completado: duplicado normalizado devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Listado comprobado. | Ninguno. |
 | P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
 | P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias y comprobar vencimiento igual al inicio del proyecto. |
@@ -178,3 +178,43 @@ con vencimiento 2026-10-30.
 - [Proyecto destino en React](evidencias/P03-tarea-proyecto-destino.png)
 - [Relación actualizada en SQL Server](evidencias/P03-tarea-proyecto-destino-sql.png)
 - [Limpieza de registros temporales](evidencias/P03-limpieza-sql.png)
+## P04 — Campos obligatorios y límites de longitud
+
+Estado: completado.
+
+### Resultados de la API
+
+- Nombres vacíos o compuestos solo por espacios: 400.
+- Correo vacío o con formato inválido: 400.
+- Título vacío o compuesto solo por espacios: 400.
+- Proyecto sin fecha de inicio: 400.
+- Tarea sin vencimiento, proyecto o responsable: 400.
+- Nombres de proyecto y responsable: 100 caracteres aceptados;
+  101 rechazados.
+- Título de tarea: 150 caracteres aceptados; 151 rechazados.
+- Descripciones de proyecto y tarea: null y 1000 caracteres
+  aceptados; 1001 rechazados.
+- Correo: 254 caracteres aceptados; 255 rechazados.
+- Las nueve pruebas del bloque automático coincidieron con
+  los códigos esperados.
+- Todos los registros temporales creados durante las pruebas
+  fueron eliminados con respuesta 204.
+
+### Resultados de React
+
+- Se comprobaron los mensajes de validación de nombres y título.
+- Nombre del proyecto: máximo 100 caracteres.
+- Descripción del proyecto: máximo 1000.
+- Nombre del responsable: máximo 100.
+- Correo del responsable: máximo 254.
+- Título de tarea: máximo 150.
+- Descripción de tarea: máximo 1000.
+
+Los límites se comprobaron pegando texto superior al máximo y
+contando los caracteres aceptados, sin guardar los formularios.
+
+### Evidencia del bloque automático
+
+[Resumen de las nueve pruebas de API](evidencias/P04-validaciones-api-resumen.png)
+
+Las capturas individuales de P04 se conservan en docs/evidencias.

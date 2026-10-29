@@ -483,3 +483,10 @@ Se comprobó el cambio de proyecto de la tarea temporal ID 9 desde React.
 La relación actualizada persistió al recargar y coincidió con SQL Server.
 Se eliminaron los registros temporales al finalizar y se documentaron
 las evidencias en docs/PRUEBAS.md.
+## P04 — Validaciones verificadas
+
+Se completaron las comprobaciones de campos obligatorios, espacios,
+formato de correo y límites de longitud de P04. Las nueve pruebas
+agrupadas de API dieron los resultados esperados y se verificaron
+los seis límites de los formularios React. Los registros temporales
+se eliminaron al finalizar.

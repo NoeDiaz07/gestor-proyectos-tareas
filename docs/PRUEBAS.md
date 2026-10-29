@@ -20,7 +20,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P03 — Tareas | Completado: CRUD desde API y React; edición de campos y cambio de proyecto comprobados. Relación y persistencia verificadas en SQL Server. | Ninguno. |
 | P04 — Obligatorios y longitudes | Completado: campos obligatorios y espacios rechazados; límites de nombres, título, descripciones y correo comprobados en API y React. Registros temporales eliminados. | Ninguno. |
 | P05 — Correo | Completado: duplicado normalizado devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Listado comprobado. | Ninguno. |
-| P06 — Relaciones | Crear y editar tareas con proyecto y responsable inexistentes devuelve 400. | Reunir evidencias y confirmar que no se guardaron cambios. |
+| P06 — Relaciones | Completado: creación y edición con proyecto y responsable inexistentes devuelven 400 con errores por campo. El POST no agrega registros y el PUT conserva los datos originales. Limpieza temporal con 204. | Ninguno. ||
 | P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias y comprobar vencimiento igual al inicio del proyecto. |
 | P08 — Borrado | Completado: bloqueo por tareas desde API y React, incluida una única tarea completada; reasignación y eliminación de tareas temporales; borrado posterior de padres sin tareas con 204. | Ninguno. |
 | P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
@@ -218,3 +218,24 @@ contando los caracteres aceptados, sin guardar los formularios.
 [Resumen de las nueve pruebas de API](evidencias/P04-validaciones-api-resumen.png)
 
 Las capturas individuales de P04 se conservan en docs/evidencias.
+## P06 — Relaciones inválidas
+
+Estado: completado.
+
+- Se comprobó que proyecto y responsable con ID 9999 no existían.
+- POST de tarea con ambas relaciones inválidas devolvió 400,
+  con errores para ProjectId y AssigneeId.
+- El listado conservó los mismos tres IDs después del POST rechazado.
+- PUT de una tarea temporal con ambas relaciones inválidas devolvió
+  400 con los errores correspondientes.
+- Una consulta posterior confirmó que todos los datos originales
+  permanecieron sin cambios.
+- Las tareas temporales 13 y 14 se eliminaron con respuesta 204.
+
+La primera ejecución tuvo un problema en el script de lectura de
+errores de PowerShell. Se corrigió el lector y se verificaron
+los mensajes de validación sin modificar el código de la API.
+
+### Evidencia
+
+[Respuestas y resumen de P06](evidencias/P06-relaciones-invalidas-resumen.png)

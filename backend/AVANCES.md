@@ -490,3 +490,10 @@ formato de correo y límites de longitud de P04. Las nueve pruebas
 agrupadas de API dieron los resultados esperados y se verificaron
 los seis límites de los formularios React. Los registros temporales
 se eliminaron al finalizar.
+## P06 — Relaciones inválidas verificadas
+
+Se confirmaron los rechazos 400 en creación y edición de tareas
+con relaciones inexistentes. No se agregaron registros con el POST
+rechazado y el PUT conservó los datos originales.
+Las tareas temporales se eliminaron con 204.
+Resultados y evidencia registrados en docs/PRUEBAS.md.

@@ -497,3 +497,9 @@ con relaciones inexistentes. No se agregaron registros con el POST
 rechazado y el PUT conservó los datos originales.
 Las tareas temporales se eliminaron con 204.
 Resultados y evidencia registrados en docs/PRUEBAS.md.
+## P07 — Fechas verificadas
+
+Las ocho comprobaciones agrupadas finalizaron correctamente.
+Se verificaron la igualdad de fechas, los rechazos por incompatibilidad
+y la conservación de datos tras solicitudes inválidas.
+Los registros temporales se eliminaron con 204.

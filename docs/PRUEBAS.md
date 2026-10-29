@@ -21,7 +21,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P04 — Obligatorios y longitudes | Completado: campos obligatorios y espacios rechazados; límites de nombres, título, descripciones y correo comprobados en API y React. Registros temporales eliminados. | Ninguno. |
 | P05 — Correo | Completado: duplicado normalizado devuelve 409; edición con correo ajeno devuelve 409; correo propio devuelve 200. Listado comprobado. | Ninguno. |
 | P06 — Relaciones | Completado: creación y edición con proyecto y responsable inexistentes devuelven 400 con errores por campo. El POST no agrega registros y el PUT conserva los datos originales. Limpieza temporal con 204. | Ninguno. ||
-| P07 — Fechas | Rechazados vencimientos anteriores al inicio y cambios incompatibles del inicio del proyecto. | Completar evidencias y comprobar vencimiento igual al inicio del proyecto. |
+| P07 — Fechas | Completado: vencimiento igual al inicio aceptado; vencimiento anterior rechazado en creación y edición; inicio incompatible del proyecto rechazado. Datos originales conservados y temporales eliminados. | Ninguno. |
 | P08 — Borrado | Completado: bloqueo por tareas desde API y React, incluida una única tarea completada; reasignación y eliminación de tareas temporales; borrado posterior de padres sin tareas con 204. | Ninguno. |
 | P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
 | P10 — Filtros | Filtros individuales, combinados, sin coincidencias y limpieza comprobados. | Preparar los datos de demostración y ejecutar el caso exacto solicitado. |
@@ -239,3 +239,19 @@ los mensajes de validación sin modificar el código de la API.
 ### Evidencia
 
 [Respuestas y resumen de P06](evidencias/P06-relaciones-invalidas-resumen.png)
+## P07 — Validación de fechas
+
+Estado: completado.
+
+- Vencimiento igual al inicio del proyecto: 201.
+- Creación con vencimiento anterior al inicio: 400 con error DueDate.
+- Edición con vencimiento anterior al inicio: 400 con error DueDate.
+- Consulta posterior: datos originales de la tarea conservados.
+- Cambio del inicio del proyecto a una fecha posterior al vencimiento
+  de su tarea: 400 con error StartDate.
+- Consulta posterior: datos originales del proyecto conservados.
+- Tarea temporal 15 y proyecto temporal 16 eliminados con 204.
+
+### Evidencia
+
+[Resumen de las ocho comprobaciones](evidencias/P07-fechas-resumen.png)

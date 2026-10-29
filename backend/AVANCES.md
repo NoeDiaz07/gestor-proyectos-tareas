@@ -503,3 +503,9 @@ Las ocho comprobaciones agrupadas finalizaron correctamente.
 Se verificaron la igualdad de fechas, los rechazos por incompatibilidad
 y la conservación de datos tras solicitudes inválidas.
 Los registros temporales se eliminaron con 204.
+## P10 — Filtros verificados
+
+Se prepararon los datos de demostración del reto y se comprobaron
+ocho escenarios de filtros desde React. Los resultados coincidieron
+con lo esperado y limpiar filtros restauró el listado completo.
+Los datos se conservan para la demostración final.

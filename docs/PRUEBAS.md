@@ -24,7 +24,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P07 — Fechas | Completado: vencimiento igual al inicio aceptado; vencimiento anterior rechazado en creación y edición; inicio incompatible del proyecto rechazado. Datos originales conservados y temporales eliminados. | Ninguno. |
 | P08 — Borrado | Completado: bloqueo por tareas desde API y React, incluida una única tarea completada; reasignación y eliminación de tareas temporales; borrado posterior de padres sin tareas con 204. | Ninguno. |
 | P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
-| P10 — Filtros | Filtros individuales, combinados, sin coincidencias y limpieza comprobados. | Preparar los datos de demostración y ejecutar el caso exacto solicitado. |
+| P10 — Filtros | Completado: ocho pruebas con los datos de demostración; filtros por proyecto y responsable, combinaciones con estado, ausencia de coincidencias y limpieza del listado verificadas desde React. | Ninguno. |
 | P11 — Errores | Varios 404 y errores con API detenida comprobados durante el desarrollo. | Completar consulta, edición y borrado inexistentes por recurso; conservación del formulario ante fallo. |
 | P02 — Responsables | Completado: creación, listado, detalle, edición y eliminación desde React con un responsable temporal sin tareas; resultados verificados en SQL Server. | Ninguno. |
 ## Registro detallado
@@ -255,3 +255,34 @@ Estado: completado.
 ### Evidencia
 
 [Resumen de las ocho comprobaciones](evidencias/P07-fechas-resumen.png)
+## P10 — Filtros con datos de demostración
+
+Estado: completado.
+
+Datos utilizados:
+- Sitio corporativo: ID 17.
+- Portal interno: ID 18.
+- Ana, ana@example.com: ID 12.
+- Luis, luis@example.com: ID 13.
+
+| Filtros | Resultado comprobado |
+|---|---|
+| Sitio corporativo | 3 tareas |
+| Portal interno | 2 tareas |
+| Ana | 3 tareas |
+| Luis | 2 tareas |
+| Sitio corporativo + Ana + Pending | Diseñar portada |
+| Sitio corporativo + Luis + InProgress | Crear formulario |
+| Sitio corporativo + Ana + Completed | Revisar textos |
+| Portal interno + Ana + Completed | Sin coincidencias |
+
+Las ocho pruebas coincidieron con lo esperado.
+La limpieza de filtros funcionó sin incidencias y restauró
+el listado completo, incluidos los registros anteriores.
+
+Los datos de demostración se conservan para la presentación final.
+
+### Evidencias
+
+- [Filtros combinados](evidencias/P10-filtros-combinados-react.png)
+- [Sin coincidencias](evidencias/P10-filtros-sin-coincidencias-react.png)

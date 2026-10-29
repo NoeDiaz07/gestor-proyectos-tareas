@@ -25,7 +25,7 @@ todavía falta cubrir algún escenario o adjuntar evidencia.
 | P08 — Borrado | Completado: bloqueo por tareas desde API y React, incluida una única tarea completada; reasignación y eliminación de tareas temporales; borrado posterior de padres sin tareas con 204. | Ninguno. |
 | P09 — Estados | Completado: creación en Pending, estado inválido rechazado, tarea completada y reabierta; persistencia comprobada al recargar. | Ninguno. |
 | P10 — Filtros | Completado: ocho pruebas con los datos de demostración; filtros por proyecto y responsable, combinaciones con estado, ausencia de coincidencias y limpieza del listado verificadas desde React. | Ninguno. |
-| P11 — Errores | Varios 404 y errores con API detenida comprobados durante el desarrollo. | Completar consulta, edición y borrado inexistentes por recurso; conservación del formulario ante fallo. |
+| P11 — Errores | Completado: GET, PUT y DELETE inexistentes devuelven 404 en los tres recursos. Con la API detenida, los formularios muestran error, conservan sus datos y permiten volver a intentar. | Ninguno. |
 | P02 — Responsables | Completado: creación, listado, detalle, edición y eliminación desde React con un responsable temporal sin tareas; resultados verificados en SQL Server. | Ninguno. |
 ## Registro detallado
 
@@ -286,3 +286,32 @@ Los datos de demostración se conservan para la presentación final.
 
 - [Filtros combinados](evidencias/P10-filtros-combinados-react.png)
 - [Sin coincidencias](evidencias/P10-filtros-sin-coincidencias-react.png)
+## P11 — Registros inexistentes y fallos de conexión
+
+Estado: completado.
+
+### API
+
+Se confirmó que el ID 9999 no existía en los tres recursos.
+GET, PUT y DELETE devolvieron 404 para proyectos, responsables
+y tareas: nueve comprobaciones correctas.
+
+### React
+
+Con los formularios cargados, se detuvo la API y se intentó
+guardar un proyecto, un responsable y una tarea.
+
+En los tres formularios:
+- Se mostró un mensaje de error.
+- Se conservaron los datos introducidos.
+- El botón volvió a estar disponible.
+
+Se reinició la API y se recargó React para descartar los datos
+de prueba sin guardarlos.
+
+### Evidencias
+
+- [Resumen de respuestas 404](evidencias/P11-inexistentes-api-resumen.png)
+- [Proyecto sin conexión](evidencias/P11-proyecto-api-detenida.png)
+- [Responsable sin conexión](evidencias/P11-responsable-api-detenida.png)
+- [Tarea sin conexión](evidencias/P11-tarea-api-detenida.png)

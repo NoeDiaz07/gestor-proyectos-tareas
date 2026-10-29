@@ -509,3 +509,9 @@ Se prepararon los datos de demostración del reto y se comprobaron
 ocho escenarios de filtros desde React. Los resultados coincidieron
 con lo esperado y limpiar filtros restauró el listado completo.
 Los datos se conservan para la demostración final.
+## P11 — Manejo de errores verificado
+
+Se comprobaron nueve respuestas 404 para operaciones sobre registros
+inexistentes. Los tres formularios React mostraron errores de conexión,
+conservaron sus datos y recuperaron la disponibilidad del botón.
+Resultados y evidencias documentados en docs/PRUEBAS.md.

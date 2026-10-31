@@ -343,3 +343,17 @@ Los responsables son registros de personas, no cuentas de acceso.
 - API o React desde una terminal: Ctrl + C en la terminal correspondiente.
 
 Los registros guardados permanecen en SQL Server al detener la aplicación.
+## Preparación de entrega completada
+
+Se grabó la demostración final con una duración de 13 minutos
+y 55 segundos.
+
+Se confirmó la revisión del repositorio, documentación,
+diagrama de datos, registro de pruebas y enlaces de evidencias.
+
+El alcance original queda preparado para evaluación del mentor.
+
+Observaciones:
+- La API se ejecuta desde terminal con UseAppHost=false.
+- Sigue pendiente resolver el inconveniente de inicio desde Visual Studio.
+- La autenticación adicional requiere concretar su alcance con el mentor.

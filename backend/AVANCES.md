@@ -515,3 +515,13 @@ Se comprobaron nueve respuestas 404 para operaciones sobre registros
 inexistentes. Los tres formularios React mostraron errores de conexión,
 conservaron sus datos y recuperaron la disponibilidad del botón.
 Resultados y evidencias documentados en docs/PRUEBAS.md.
+## Revisión de documentación de entrega
+
+Se actualizó el README para reflejar el cierre de P01 a P12,
+los datos de demostración y los comandos de ejecución utilizados.
+
+Se verificaron los enlaces al modelo de datos, pruebas, evidencias
+y registro de avances, además de las capturas enlazadas en PRUEBAS.md.
+
+Quedan pendientes el guion, el ensayo de la demostración final
+y la revisión final del repositorio.

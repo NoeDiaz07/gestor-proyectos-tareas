@@ -525,3 +525,13 @@ y registro de avances, además de las capturas enlazadas en PRUEBAS.md.
 
 Quedan pendientes el guion, el ensayo de la demostración final
 y la revisión final del repositorio.
+## Ensayo de demostración final
+
+Se realizó un ensayo completo de aproximadamente 19 minutos,
+sin inconvenientes reportados.
+
+Se comprobó el recorrido previsto en el guion de demostración.
+Se ajustó la distribución del tiempo para preparar una presentación
+de entre 10 y 15 minutos.
+
+Pendientes: grabación final y revisión final del repositorio.

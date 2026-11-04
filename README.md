@@ -17,6 +17,11 @@ Cada tarea pertenece a un proyecto y tiene un responsable asignado.
 - Conservar los datos del formulario cuando falla el guardado.
 - Navegar entre las secciones mediante un menú.
 - Adaptar formularios y navegación a ventanas estrechas.
+## Ejemplo de la API
+
+La consulta `GET /api/assignees` devuelve los responsables registrados.
+
+![Swagger: consulta de responsables con respuesta HTTP 200](docs/evidencias/swagger-responsables-200.png)
 
 ## Herramientas utilizadas
 
